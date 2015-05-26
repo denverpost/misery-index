@@ -1,5 +1,5 @@
 # Misery Index
-Rockies Misery Index
+Let's quantify how miserable the Colorado Rockies are, daily.
 
 # License
 
