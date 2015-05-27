@@ -9,7 +9,6 @@ import doctest
 import csv
 import codecs, cStringIO
 import datetime, time
-from docopt import docopt
 import gspread
 from spreadsheet import Sheet
 from collections import defaultdict
@@ -18,7 +17,7 @@ try:
 except ImportError:
     # python 2.6 or earlier, use backport
     from ordereddict import OrderedDict
-from optparse import OptionParser
+import argparse
 
 
 class UnicodeWriter:
@@ -58,12 +57,6 @@ class Misery:
     def __init__(self, sheet):
         self.sheet = sheet
         self.is_metro = False
-
-    def set_is_metro(self, value):
-        """ Setter for self.is_metro.
-            """
-        self.is_metro = value
-        return self.is_metro
 
     def publish(self, worksheet=None):
         """ Publish the misery data in whatever permutations we need.
@@ -112,21 +105,14 @@ class Misery:
                         publish = False
 
             if publish:
-                if self.sheet.options and self.sheet.options.geocode:
-                    if record['Latitude'] == '' or record['Longitude'] == '':
-                        geo = Geocode('%s, %s' % (record['Address of misery'], record['City']))
-                        latlng = geo.get()
-                        record['Latitude'] = latlng.split(',')[0]
-                        record['Longitude'] = latlng.split(',')[1]
-                        # *** Still need to write these values back to the spreadsheet
-                if self.is_metro:
-                    record['is_metro'] = 1
-
                 # Turn the date into a timestamp.
                 try:
+                    timestamp = record['Timestamp']
+                    if record['Datetime'] != '':
+                        timestamp = record['Datetime']
                     record['unixtime'] = int(time.mktime(
-                                                         datetime.datetime.strptime(record['Date of misery'],
-                                                         "%m/%d/%Y").timetuple()))
+                                                         datetime.datetime.strptime(timestamp,
+                                                         "%m/%d/%Y %X").timetuple()))
                 except:
                     record['unixtime'] = 0
                 
@@ -140,47 +126,32 @@ class Misery:
 
         return True
 
-def main(options, args):
+def main(args):
     """ Take args as key=value pairs, pass them to the add_filter method.
         Example command:
-        $ python misery.py City=Denver
-        or
-        $ python misery.py City="Portland Metro"
+        $ python misery.py
         """
     sheet = Sheet('Misery Index', 'responses')
-    sheet.set_options(options)
-    is_metro = False
-    for arg in args:
-        if '=' not in arg:
-            continue
-        k, v = arg.split('=')
-
-        # Metro-specific special case
-        if k.lower() == 'city' and 'etro' in v:
-            is_metro = True
-        sheet.add_filter(k, v)
+    sheet.set_options(args)
     miserys = Misery(sheet)
-    miserys.set_is_metro(is_metro)
     miserys.publish()
 
 if __name__ == '__main__':
-    parser = OptionParser()
-    parser.add_option("-g", "--geocode", dest="geocode", default=False, action="store_true")
-    parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
-    #parser.add_option("-h", "--help", dest="help", default=False, action="store_true")
-    (options, args) = parser.parse_args()
+    parser = argparse.ArgumentParser(usage='$ python misery.py',
+                                     description='Turn the Misery Index spreadsheet into something useful on the web.',
+                                     epilog='')
+    parser.add_argument("-g", "--geocode", dest="geocode", default=False, action="store_true")
+    parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
+    args = parser.parse_args()
 
-    if options.verbose:
+    if args.verbose:
         doctest.testmod(verbose=options.verbose)
-    if options.help:
+    if 'helpa' in args:
         print """
-Downloads, filters and re-publishes the Google sheet of miserys.
-Takes arguments based on the field names in the sheet.
+Downloads, filters and re-publishes the Google sheet of Bad Things.
 
 Example command:
-$ python misery.py City=Denver
-or
-$ python misery.py City="Portland Metro"
+$ python misery.py
         """
 
-    main(options, args)
+    main(args)
