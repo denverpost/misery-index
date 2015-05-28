@@ -127,18 +127,16 @@ class Misery:
         return True
 
 def main(args):
-    """ Take args as key=value pairs, pass them to the add_filter method.
-        Example command:
-        $ python misery.py
+    """ 
         """
     sheet = Sheet('Misery Index', 'responses')
     sheet.set_options(args)
-    miserys = Misery(sheet)
-    miserys.publish()
+    misery = Misery(sheet)
+    misery.publish()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(usage='$ python misery.py',
-                                     description='Turn the Misery Index spreadsheet into something useful on the web.',
+                                     description='Downloads, filters and re-publishes the Google sheet of Bad Things.',
                                      epilog='')
     parser.add_argument("-g", "--geocode", dest="geocode", default=False, action="store_true")
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
@@ -146,12 +144,5 @@ if __name__ == '__main__':
 
     if args.verbose:
         doctest.testmod(verbose=options.verbose)
-    if 'helpa' in args:
-        print """
-Downloads, filters and re-publishes the Google sheet of Bad Things.
-
-Example command:
-$ python misery.py
-        """
 
     main(args)
