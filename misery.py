@@ -12,11 +12,6 @@ import datetime, time
 import gspread
 from spreadsheet import Sheet
 from collections import defaultdict
-try:
-    from collections import OrderedDict
-except ImportError:
-    # python 2.6 or earlier, use backport
-    from ordereddict import OrderedDict
 import argparse
 
 
@@ -89,7 +84,8 @@ class Misery:
                 keys = row
                 recordwriter.writerow(keys)
                 continue
-            record = OrderedDict(zip(keys, row))
+            record = dict(zip(keys, row))
+            # {'Bad Thing': 'Test two', 'Timestamp': '5/27/2015 17:01:39', 'URL': '', 'Value': '7', 'Datetime': '5/26/2015 17:39:00'}
 
             # We write lines one-by-one. If we have filters, we run
             # through them here to see if we're handling a record we
