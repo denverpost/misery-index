@@ -49,6 +49,7 @@ class Misery:
     """ Handle the misery spreadsheet-specific parts of publishing
         from Google Sheets.
         """
+
     def __init__(self, sheet):
         self.sheet = sheet
         self.is_metro = False
@@ -134,7 +135,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(usage='$ python misery.py',
                                      description='Downloads, filters and re-publishes the Google sheet of Bad Things.',
                                      epilog='')
-    parser.add_argument("-g", "--geocode", dest="geocode", default=False, action="store_true")
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
     args = parser.parse_args()
 

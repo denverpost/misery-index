@@ -43,14 +43,40 @@
     <meta property="article:publisher" content="https://www.facebook.com/denverpost" />
 
     <meta name="google-site-verification" content="2bKNvyyGh6DUlOvH1PYsmKN4KRlb-0ZI7TvFtuKLeAc" />
-
+    <style type="text/css">
+        iframe#input
+        {
+            width: 50%;
+            height: 100%;
+            min-height: 860px;
+            float: left;
+            margin-right: 10px;
+        }
+        footer 
+        {
+            clear: both; 
+            margin: auto;
+            text-align: center;
+        }
+        @media only screen and (max-width: 768px) {
+            iframe#input
+            {
+                width: 100%;
+                float: none;
+                margin-right: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="http://extras.mnginteractive.com/live/css/site67/bartertown.css" />
+    <script src="http://local.denverpost.com/common/jquery/jquery-min.js"></script>
 </head>
 <body>
     <h1>Rockies Misery Index</h1>
-<script>
-</script>
 
-    <h2></h2>
+    <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
+    <h2>Recent Bad Things</h2>
+    <script>
+    </script>
     <p>
     </p>
 
