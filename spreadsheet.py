@@ -14,7 +14,7 @@ try:
 except ImportError:
     # python 2.6 or earlier, use backport
     from ordereddict import OrderedDict
-from optparse import OptionParser
+import argparse
 
 
 class Sheet:
@@ -134,27 +134,23 @@ class Sheet:
         return True
 
 
-def main(options, args):
+def main(args):
     """ Take args as key=value pairs, pass them to the add_filter method.
         Example command:
         $ python spreadsheet.py City=Denver
         """
-    sheet = Sheet('Homicide Report', 'responses')
-    sheet.set_options(options)
-    for arg in args:
-        if '=' not in arg:
-            continue
-        k, v = arg.split('=')
-        sheet.add_filter(k, v)
+    sheet = Sheet('Misery Index', 'responses')
+    sheet.set_options(args)
     sheet.publish()
 
 if __name__ == '__main__':
-    parser = OptionParser()
-    parser.add_option("-g", "--geocode", dest="geocode", default=False, action="store_true")
-    parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true")
-    (options, args) = parser.parse_args()
+    parser = argparse.ArgumentParser(usage='$ python spreadsheet.py',
+                                     description='',
+                                     epilog='')
+    parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
+    args = parser.parse_args()
 
-    if options.verbose:
-        doctest.testmod(verbose=options.verbose)
+    if args.verbose:
+        doctest.testmod(verbose=args.verbose)
 
-    main(options, args)
+    main(args)

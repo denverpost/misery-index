@@ -143,6 +143,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.verbose:
-        doctest.testmod(verbose=options.verbose)
+        doctest.testmod(verbose=args.verbose)
 
     main(args)
