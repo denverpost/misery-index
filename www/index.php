@@ -76,9 +76,23 @@
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
     <h2>Recent Bad Things</h2>
     <script>
+        $.getJSON( "output/responses.json", function( data ) {
+            var items = [];
+            $.each( data, function( key, val ) 
+            {
+                console.log(key, val);
+                items.push( "<li id='" + key + "'>" + val['Bad Thing'] + ": " + val['Timestamp'] + "</li>" );
+            });
+
+            items.reverse();
+            $( "<ul/>", {
+                "class": "my-new-list",
+                html: items.join( "" )
+            }).appendTo( "#recently" );
+        });
     </script>
-    <p>
-    </p>
+    <div id="recently">
+    </div>
 
     <footer>
     <p>Copyright &copy; 2015 <a href="http://www.denverpost.com/">The Denver Post</a></p>
