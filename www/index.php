@@ -94,6 +94,54 @@
     <div id="recently">
     </div>
 
+    <div id="dinger">
+        <div class="teardrop" id="item01"></div>
+    </div>
+
+<style type="text/css">
+#dinger
+{
+    width: 100%;
+    height: 100%;
+    border: 1px solid red;
+}
+.teardrop
+{
+    display: block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    float: none;
+    z-index: auto;
+    width: 3em;
+    height: 3em;
+    position: relative;
+    cursor: default;
+    opacity: 1;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: none;
+    -webkit-border-radius: 80% 0 55% 50% / 55% 0 80% 50%;
+    border-radius: 80% 0 55% 50% / 55% 0 80% 50%;
+    font: normal 100%/normal Arial, Helvetica, sans-serif;
+    color: rgba(0,0,0,1);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #b3d1ff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    text-shadow: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+    -webkit-transform: rotateZ(-45deg)   ;
+    transform: rotateZ(-45deg)   ;
+    -webkit-transform-origin: 50% 50% 0;
+    transform-origin: 50% 50% 0;
+}
+</style>
     <footer>
     <p>Copyright &copy; 2015 <a href="http://www.denverpost.com/">The Denver Post</a></p>
     <p>
