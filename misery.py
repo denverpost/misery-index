@@ -8,7 +8,7 @@ import json
 import doctest
 import csv
 import codecs, cStringIO
-import datetime, time
+from datetime import datetime, timedelta
 import gspread
 from spreadsheet import Sheet
 from collections import defaultdict
@@ -86,7 +86,7 @@ class Misery:
                 recordwriter.writerow(keys)
                 continue
             record = dict(zip(keys, row))
-            # {'Bad Thing': 'Test two', 'Timestamp': '5/27/2015 17:01:39', 'URL': '', 'Value': '7', 'Datetime': '5/26/2015 17:39:00'}
+            # {'Bad Thing': 'Test two', 'Timestamp': '5/27/2015 17:01:39', 'URL': '', 'Value': '7', 'Date': '5/26/2015'}
 
             # We write lines one-by-one. If we have filters, we run
             # through them here to see if we're handling a record we
@@ -108,7 +108,7 @@ class Misery:
                     if record['Date'] != '':
                         timestamp = record['Date']
                     record['unixtime'] = int(time.mktime(
-                                                         datetime.datetime.strptime(timestamp,
+                                                         datetime.strptime(timestamp,
                                                          "%m/%d/%Y").timetuple()))
                 except:
                     record['unixtime'] = 0
