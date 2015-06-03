@@ -109,15 +109,15 @@ class Misery:
                     record['Timestamp'] = timestamp
                     if record['Date'] != '':
                         timestamp = record['Date']
-                    record['unixtime'] = int(time.mktime(
-                                                         datetime.strptime(timestamp,
-                                                         "%m/%d/%Y").timetuple()))
+                    day = datetime.strptime(timestamp, "%m/%d/%Y")
+                    record['unixtime'] = int(time.mktime(day.timetuple()))
                 except:
                     record['unixtime'] = 0
 
                 # We want to know how many days ago this happened,
                 # and add that to the record.
-                #days_ago = 
+                days_ago = datetime.today() - day
+                record['ago'] = days_ago.days
                 
                 recordwriter.writerow(row)
                 records += [record]
