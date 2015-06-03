@@ -9,6 +9,7 @@ import doctest
 import csv
 import codecs, cStringIO
 from datetime import datetime, timedelta
+import time
 import gspread
 from spreadsheet import Sheet
 from collections import defaultdict
@@ -96,7 +97,7 @@ class Misery:
                 for item in self.sheet.filters:
                     # Special handling for filtering by years. Hard-coded.
                     if item['key'] == 'Year':
-                        if item['value'] not in record['Date of misery']:
+                        if item['value'] not in record['Date']:
                             publish = False
                     elif record[item['key']] != item['value']:
                         publish = False
@@ -104,7 +105,8 @@ class Misery:
             if publish:
                 # Turn the date into a timestamp.
                 try:
-                    timestamp = record['Timestamp']
+                    timestamp = record['Timestamp'].split(' ')[0]
+                    record['Timestamp'] = timestamp
                     if record['Date'] != '':
                         timestamp = record['Date']
                     record['unixtime'] = int(time.mktime(
@@ -112,6 +114,10 @@ class Misery:
                                                          "%m/%d/%Y").timetuple()))
                 except:
                     record['unixtime'] = 0
+
+                # We want to know how many days ago this happened,
+                # and add that to the record.
+                #days_ago = 
                 
                 recordwriter.writerow(row)
                 records += [record]
