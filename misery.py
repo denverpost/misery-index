@@ -105,11 +105,11 @@ class Misery:
                 # Turn the date into a timestamp.
                 try:
                     timestamp = record['Timestamp']
-                    if record['Datetime'] != '':
-                        timestamp = record['Datetime']
+                    if record['Date'] != '':
+                        timestamp = record['Date']
                     record['unixtime'] = int(time.mktime(
                                                          datetime.datetime.strptime(timestamp,
-                                                         "%m/%d/%Y %X").timetuple()))
+                                                         "%m/%d/%Y").timetuple()))
                 except:
                     record['unixtime'] = 0
                 
@@ -131,12 +131,17 @@ def main(args):
     misery = Misery(sheet)
     misery.publish()
 
-if __name__ == '__main__':
+def build_parser(args):
+    """ A method to handle argparse.
+        """
     parser = argparse.ArgumentParser(usage='$ python misery.py',
                                      description='Downloads, filters and re-publishes the Google sheet of Bad Things.',
                                      epilog='')
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
-    args = parser.parse_args()
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    args = build_parser(sys.argv)
 
     if args.verbose:
         doctest.testmod(verbose=args.verbose)
