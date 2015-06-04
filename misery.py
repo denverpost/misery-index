@@ -165,11 +165,25 @@ class Misery:
         i = 0
         while True:
             day = first_day + timedelta(days=i)
-            day_str = date.strftime(day, "%m/%d/%Y")
+            day_str = date.strftime(day, "%-m/%-d/%Y")
             distinct_days[day_str] = 0
             i += 1
             if day == today:
                 break
+
+        # Add up the raw score.
+        for item in self.items:
+            distinct_days[item[0]] += int(item[1])
+
+        # Now loop through the raw score, and calculate the total scores.
+        # The next day's score is equal to half of the previous day's score plus any new events.
+        previous_score = 0
+        for day in iter(distinct_days):
+            score = (previous_score/2) + distinct_days[day]
+            distinct_days[day] = score
+            previous_score = score
+
+        return distinct_days
 
 def main(args):
     """ 
