@@ -8,11 +8,11 @@ import json
 import doctest
 import csv
 import codecs, cStringIO
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 import time
 import gspread
 from spreadsheet import Sheet
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import argparse
 
 
@@ -107,7 +107,10 @@ class Misery:
                 try:
                     timestamp = record['Timestamp'].split(' ')[0]
                     record['Timestamp'] = timestamp
-                    if record['Date'] != '':
+                    if record['Date'] == '':
+                        # We do this so we can use the Date field from here on out.
+                        record['Date'] = record['Timestamp']
+                    else:
                         timestamp = record['Date']
                     day = datetime.strptime(timestamp, "%m/%d/%Y")
                     record['unixtime'] = int(time.mktime(day.timetuple()))
@@ -122,12 +125,51 @@ class Misery:
                 recordwriter.writerow(row)
                 records += [record]
 
+        # Now build the day-by-day Misery Indexes.
+        # We'll have a list of date/value pairs by the end of this.
+        items = []
+        for record in records:
+            items.append((record['Date'], record['Value']))
+        self.items = items
+        scores = self.calc_score()
+
         if records:
             json.dump(records, fn['json'])
             content = json.dumps(records)
             fn['jsonp'].write('misery_callback(%s);' % content)
 
         return True
+
+    def calc_score(self):
+        """ Given a dict of date/score tuples, return a per-day list of date/score tuples.
+            We use an OrderedDict so we know what the first day of events is --
+            we can't be certain that something happens on every day, so we use
+            the first-day to populate a dict with every date between then and now.
+
+            Keep in mind more than one event can happen per day.
+            Also keep in mind that an event on one day still affects the 
+            next day's score -- it's worth half what it was worth the day before.
+            """
+        # items is expected to look something like
+        # [('6/1/2015', '2'), ('6/2/2015', '10'), ('6/3/2015', '4')]
+
+        # Consolidate the dates so we can make a set with this object.
+        event_days = OrderedDict()
+        distinct_days = OrderedDict()
+        for item in self.items:
+            if item[0] not in event_days:
+                event_days[item[0]] = 0
+        first_day = datetime.strptime(next(iter(event_days)), "%m/%d/%Y").date()
+        today = date.today()
+
+        i = 0
+        while True:
+            day = first_day + timedelta(days=i)
+            day_str = date.strftime(day, "%m/%d/%Y")
+            distinct_days[day_str] = 0
+            i += 1
+            if day == today:
+                break
 
 def main(args):
     """ 
