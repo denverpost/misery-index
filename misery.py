@@ -132,6 +132,15 @@ class Misery:
             items.append((record['Date'], record['Value']))
         self.items = items
         scores = self.calc_score()
+        if scores:
+            fh = open('output/scores.json', 'wb')
+            json.dump(scores, fh)
+            fh.close()
+            content = json.dumps(scores)
+            fh = open('output/scores.jsonp', 'wb')
+            fh.write('misery_scores_callback(%s);' % content)
+            fh.close()
+            
 
         if records:
             json.dump(records, fn['json'])

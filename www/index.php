@@ -69,12 +69,12 @@
     </style>
     <link rel="stylesheet" type="text/css" href="http://extras.mnginteractive.com/live/css/site67/bartertown.css" />
     <script src="http://local.denverpost.com/common/jquery/jquery-min.js"></script>
+    <script src="js/d3.v3.min.js"></script>
 </head>
 <body>
     <h1>Rockies Misery Index</h1>
 
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
-    <h2>Recent Bad Things</h2>
     <script>
         $.getJSON( "output/responses.json", function( data ) {
             var items = [];
@@ -91,6 +91,149 @@
             }).appendTo( "#recently" );
         });
     </script>
+<h2>Misery, by day</h2>
+<svg class="chart" id="chart"></svg>
+<style>
+.chart 
+{ 
+    color: black; 
+    min-width: 220px;
+    width: 100%;
+    max-width: 960px;
+}
+.chart rect {
+  fill: #42298E;
+}
+
+.chart text {
+  fill: #666;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+.axis text {
+  font: 10px sans-serif;
+    color: #666;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+</style>
+<script>
+var data = [];
+        $.getJSON( "output/scores.json", function( data ) {
+            var items = [];
+            $.each( data, function( key, val ) 
+            {
+                var obj = {"count": val, "date": key};
+                window.data.push(obj);
+                //items.push( "<li id='" + key + "'>" + key + ": " + val + "</li>" );
+            });
+
+            $( "<ul/>", {
+                "class": "my-new-list",
+                html: items.join( "" )
+            }).appendTo( "#recently" );
+var $chart = $('#chart');
+var mobile_threshold = 500;
+var aspect = { width: 12, height: 6 };
+
+var margin = { top: 20, right: 20, bottom: 30, left: 30 },
+    width = $chart.width() - margin.left - margin.right,
+    height = 200 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var x_axis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var y_axis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+var chart = d3.select(".chart")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var data = window.data;
+// The last month will be the current month, which will be incomplete, so we remove it.
+
+data.forEach(function(d) 
+{
+    var format = d3.time.format("%m/%d/%Y");
+    var format_axis = d3.time.format("%b %_d");
+    d.date = format.parse(d.date);
+    var date_orig = d.date;
+    d.date = format_axis(d.date);
+    if ( width < mobile_threshold )
+    {
+        var year_format = d3.time.format("%Y");
+        var year = year_format(date_orig);
+        year = year.replace('2015', '');
+        var month_letter = d.date[0];
+        d.date = month_letter + year;
+    }
+    else
+    {
+        d.date = d.date.replace('2015', '\'');
+    }
+    d.count = +d.count;
+    previous_date = d.date;
+});
+
+x.domain(data.map(function(d) { return d.date; }));
+y.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+
+chart.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(x_axis);
+
+chart.append("g")
+    .attr("class", "y axis")
+    .call(y_axis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Misery");
+
+chart.selectAll("bar")
+    .data(data)
+    .enter().append("rect")
+    .attr("class", "bar")
+    .attr("x", function(d) { return x(d.date); })
+    .attr("width", x.rangeBand())
+    .attr("y", function(d) { return y(d.count); })
+    .attr("height", function(d) { return height - y(d.count); });
+
+/*
+chart.append("text")
+    .attr("x", x.rangeBand() / 2)
+    .attr("y", function(d) { return y(d.count) + 3; })
+    .attr("dy", ".75em")
+    .text(function(d) { return d.count; });
+*/
+        });
+</script>
+
+    <h2>Recent Bad Things</h2>
     <div id="recently">
     </div>
 
@@ -103,7 +246,6 @@
 {
     width: 100%;
     height: 100%;
-    border: 1px solid red;
 }
 .teardrop
 {
