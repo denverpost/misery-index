@@ -132,17 +132,23 @@
 .x.axis path {
   display: none;
 }
+
+/* Hide all but the every-seventh tick and label on the x axis */
+g.x > g:nth-child(1n+0) { display:none; }
+g.x > g:nth-child(7n+1)
+{
+    display: block;
+}
 </style>
 <script>
 var data = [];
-        $.getJSON( "output/scores.json", function( data ) {
-            var items = [];
-            $.each( data, function( key, val ) 
-            {
-                var obj = {"count": val, "date": key};
-                window.data.push(obj);
-                //items.push( "<li id='" + key + "'>" + key + ": " + val + "</li>" );
-            });
+$.getJSON( "output/scores.json", function( data ) {
+    var items = [];
+    $.each( data, function( key, val ) 
+    {
+        var obj = {"count": val, "date": key};
+        window.data.push(obj);
+    });
 
 var $chart = $('#chart');
 var mobile_threshold = 500;
@@ -178,10 +184,13 @@ var data = window.data;
 data.forEach(function(d) 
 {
     var format = d3.time.format("%m/%d/%Y");
-    var format_axis = d3.time.format("%b %_d");
+    var format_axis = d3.time.format("%b %-d");
+    var format_ordinal = d3.time.format("%-j");
     d.date = format.parse(d.date);
     var date_orig = d.date;
+    var ordinal = format_ordinal(d.date);
     d.date = format_axis(d.date);
+
     if ( width < mobile_threshold )
     {
         var year_format = d3.time.format("%Y");
