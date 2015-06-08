@@ -84,7 +84,7 @@
                 var timestamp = val['Timestamp'];
                 if ( val['Date'] !== '' ) timestamp = val['Date'];
 
-                var text = val['Bad Thing'] + ": " + val['Timestamp'];
+                var text = val['Bad Thing'] + ": " + timestamp;
                 if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "'>" + text + "</a>";
 
                 items.push( "<li id='" + key + "'>" + text + "</li>" );
