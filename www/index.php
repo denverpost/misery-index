@@ -74,7 +74,9 @@
 <body>
     <h1>Rockies Misery Index</h1>
 
+    <?php if ( trim($_ENV['FORM_URL']) !== '' ): ?>
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
+    <?php endif; ?>
     <script>
         $.getJSON( "output/responses.json", function( data ) {
             var items = [];
@@ -92,7 +94,6 @@
 
             items.reverse();
             $( "<ul/>", {
-                "class": "my-new-list",
                 html: items.join( "" )
             }).appendTo( "#recently" );
         });
@@ -143,10 +144,6 @@ var data = [];
                 //items.push( "<li id='" + key + "'>" + key + ": " + val + "</li>" );
             });
 
-            $( "<ul/>", {
-                "class": "my-new-list",
-                html: items.join( "" )
-            }).appendTo( "#recently" );
 var $chart = $('#chart');
 var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
