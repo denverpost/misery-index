@@ -153,7 +153,8 @@ var margin = { top: 20, right: 20, bottom: 30, left: 30 },
     height = 200 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1);
+    //.rangeRoundBands([0, width], .1);
+    .rangeRoundBands([5, 60], .1);
 var y = d3.scale.linear()
     .range([height, 0]);
 
@@ -173,7 +174,6 @@ var chart = d3.select(".chart")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var data = window.data;
-// The last month will be the current month, which will be incomplete, so we remove it.
 
 data.forEach(function(d) 
 {
@@ -222,7 +222,8 @@ chart.selectAll("bar")
     .enter().append("rect")
     .attr("class", "bar")
     .attr("x", function(d) { return x(d.date); })
-    .attr("width", x.rangeBand())
+    //.attr("width", x.rangeBand())
+    .attr("width", 5)
     .attr("y", function(d) { return y(d.count); })
     .attr("height", function(d) { return height - y(d.count); });
 
