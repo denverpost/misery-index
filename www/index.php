@@ -81,7 +81,13 @@
             $.each( data, function( key, val ) 
             {
                 console.log(key, val);
-                items.push( "<li id='" + key + "'>" + val['Bad Thing'] + ": " + val['Timestamp'] + "</li>" );
+                var timestamp = val['Timestamp'];
+                if ( val['Date'] !== '' ) timestamp = val['Date'];
+
+                var text = val['Bad Thing'] + ": " + val['Timestamp'];
+                if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "'>" + text + "</a>";
+
+                items.push( "<li id='" + key + "'>" + text + "</li>" );
             });
 
             items.reverse();
