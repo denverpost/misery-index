@@ -74,7 +74,7 @@
 <body>
     <h1>Rockies Misery Index</h1>
 
-    <?php if ( trim($_ENV['FORM_URL']) !== '' ): ?>
+    <?php if ( array_key_exists('FORM_URL', $_ENV) ): ?>
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
     <?php endif; ?>
     <script>
@@ -82,7 +82,6 @@
             var items = [];
             $.each( data, function( key, val ) 
             {
-                console.log(key, val);
                 var timestamp = val['Timestamp'];
                 if ( val['Date'] !== '' ) timestamp = val['Date'];
 
@@ -146,6 +145,7 @@ $.getJSON( "output/scores.json", function( data ) {
     var items = [];
     $.each( data, function( key, val ) 
     {
+        console.log(key, val);
         var obj = {"count": val, "date": key};
         window.data.push(obj);
     });
