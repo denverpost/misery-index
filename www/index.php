@@ -236,23 +236,17 @@ chart.selectAll("bar")
     .attr("y", function(d) { return y(d.count); })
     .attr("height", function(d) { return height - y(d.count); });
 
-/*
-chart.append("text")
-    .attr("x", x.rangeBand() / 2)
-    .attr("y", function(d) { return y(d.count) + 3; })
-    .attr("dy", ".75em")
-    .text(function(d) { return d.count; });
-*/
         });
 </script>
-
-    <h2>Recent Bad Things</h2>
-    <div id="recently">
-    </div>
 
     <div id="dinger">
         <div class="teardrop" id="item01"></div>
     </div>
+
+    <h2>Recent Misery</h2>
+    <div id="recently">
+    </div>
+
 
 <style type="text/css">
 #dinger
