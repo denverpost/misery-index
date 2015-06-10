@@ -189,7 +189,7 @@ class Misery:
         # The next day's score is equal to half of the previous day's score plus any new events.
         previous_score = 0
         for day in iter(distinct_days):
-            score = round(previous_score/float(2)) + distinct_days[day]
+            score = round(previous_score/float(2.1)) + distinct_days[day]
             distinct_days[day] = score
             previous_score = score
 
