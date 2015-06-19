@@ -141,6 +141,29 @@ g.x > g:nth-child(7n+1)
 </style>
 <script>
 var data = [];
+var dates = {
+    start: new Date(2015, 5, 1),
+    current: new Date(),
+    delta: 0,
+    get_delta: function()
+    {
+        this.current.setHours(0);
+        this.current.setMinutes(0);
+        this.current.setSeconds(0);
+        this.current.setMilliseconds(0);
+
+        var delta = this.current - this.start;
+
+        this.delta = Math.round(delta / 1000 / 60 / 60/ 24) + 1;
+        return Math.round(delta / 1000 / 60 / 60/ 24) + 1;
+    },
+    init: function()
+    {
+        this.get_delta();
+    }
+};
+dates.init();
+
 $.getJSON( "output/scores.json", function( data ) {
     var items = [];
     $.each( data, function( key, val ) 

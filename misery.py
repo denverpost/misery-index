@@ -207,7 +207,11 @@ def build_parser(args):
     """ A method to handle argparse.
         """
     parser = argparse.ArgumentParser(usage='$ python misery.py',
-                                     description='Downloads, filters and re-publishes the Google sheet of Bad Things.',
+                                     description='''Downloads, filters and 
+                                                    re-publishes the Google
+                                                    sheet of Bad Things that
+                                                    the Rockies have done /
+                                                    had done to the team.''',
                                      epilog='')
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
     return parser.parse_args()
