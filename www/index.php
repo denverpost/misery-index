@@ -176,6 +176,7 @@ $.getJSON( "output/scores.json", function( data ) {
 var $chart = $('#chart');
 var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
+var chart_width = window.dates.delta * 6;
 
 var margin = { top: 20, right: 20, bottom: 30, left: 30 },
     width = $chart.width() - margin.left - margin.right,
@@ -183,7 +184,7 @@ var margin = { top: 20, right: 20, bottom: 30, left: 30 },
 
 var x = d3.scale.ordinal()
     //.rangeRoundBands([0, width], .1);
-    .rangeRoundBands([5, 60], .1);
+    .rangeRoundBands([5, chart_width], .1);
 var y = d3.scale.linear()
     .range([height, 0]);
 
