@@ -73,6 +73,10 @@
 </head>
 <body>
     <h1>Rockies Misery Index</h1>
+    <div id="dinger">
+        <img src="http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif" alt="Sad Dinger" width="300" height="284" />
+        <p>Dinger's crying <span id="tears">0</span> tears today.</p>
+    </div>
 
     <?php if ( array_key_exists('FORM_URL', $_ENV) ): ?>
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
@@ -172,6 +176,16 @@ $.getJSON( "output/scores.json", function( data ) {
         var obj = {"count": val, "date": key};
         window.data.push(obj);
     });
+
+
+    // Dinger's tears.
+    var tear = {
+        src: 'http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_044312_dinger-tear70.gif',
+        add: function()
+        {
+            // Add a tear to Dinger's face.
+        }
+    };
 
 var $chart = $('#chart');
 var mobile_threshold = 500;
