@@ -184,7 +184,7 @@ var margin = { top: 20, right: 20, bottom: 30, left: 30 },
 
 var x = d3.scale.ordinal()
     //.rangeRoundBands([0, width], .1);
-    .rangeRoundBands([5, chart_width], .1);
+    .rangeRoundBands([1, chart_width], .1);
 var y = d3.scale.linear()
     .range([height, 0]);
 
