@@ -310,10 +310,6 @@ chart.selectAll("bar")
         });
 </script>
 
-    <div id="dinger">
-        <div class="teardrop" id="item01"></div>
-    </div>
-
     <h2>Recent Misery</h2>
     <div id="recently">
     </div>
@@ -324,42 +320,6 @@ chart.selectAll("bar")
 {
     width: 100%;
     height: 100%;
-}
-.teardrop
-{
-    display: block;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    float: none;
-    z-index: auto;
-    width: 3em;
-    height: 3em;
-    position: relative;
-    cursor: default;
-    opacity: 1;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    border: none;
-    -webkit-border-radius: 80% 0 55% 50% / 55% 0 80% 50%;
-    border-radius: 80% 0 55% 50% / 55% 0 80% 50%;
-    font: normal 100%/normal Arial, Helvetica, sans-serif;
-    color: rgba(0,0,0,1);
-    -o-text-overflow: clip;
-    text-overflow: clip;
-    background: #b3d1ff;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    text-shadow: none;
-    -webkit-transition: none;
-    -moz-transition: none;
-    -o-transition: none;
-    transition: none;
-    -webkit-transform: rotateZ(-45deg)   ;
-    transform: rotateZ(-45deg)   ;
-    -webkit-transform-origin: 50% 50% 0;
-    transform-origin: 50% 50% 0;
 }
 </style>
     <footer>
