@@ -185,17 +185,21 @@ $.getJSON( "output/scores.json", function( data ) {
         rand: function(floor, ceiling)
         {
             // Return a random number between floor and ceiling.
-            var num = 0;
-            while ( floor > num < ceiling )
+            var num = -1;
+            while ( floor > num || num > ceiling )
             {
-                num = Date.prototype.getMilliseconds() + Date.prototype.getSeconds();
+                var now = new Date();
+                num = now.getMilliseconds() + now.getSeconds();
             }
-            
+            console.log(num);
+            return num;
         },
         add: function(i)
         {
             // Add a tear to Dinger's face.
-            
+            var x = this.rand(50,250);
+            var y = this.rand(210,300);
+            $('#dinger').append('<img src="' + this.src + '" id="tear' + i + '" style="position:absolute;top:' + y + 'px;left:' + x + 'px;">');
         },
         init: function()
         {
@@ -207,6 +211,7 @@ $.getJSON( "output/scores.json", function( data ) {
             {
                 this.add(i);
             }
+            $('#tears').text(count);
         }
     };
     tear.init();
