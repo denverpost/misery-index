@@ -295,7 +295,7 @@ chart.selectAll("bar")
     <script>
         if ( iframe === 1 )
         {
-            $('h1, footer').remove()
+            $('h1, h2, footer').remove()
         }
     </script>
 </body
