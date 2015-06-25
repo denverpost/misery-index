@@ -190,9 +190,20 @@ $.getJSON( "output/scores.json", function( data ) {
         add: function(i)
         {
             // Add a tear to Dinger's face.
-            var x = this.rand(50,250);
+            var x = this.rand(50,220);
             var y = this.rand(210,300);
-            $('#dinger').append('<img src="' + this.src + '" id="tear' + i + '" style="position:absolute;top:' + y + 'px;left:' + x + 'px;">');
+
+            // Figure out how much to rotate the tear.
+            // 115px's the center point. 
+            var negative = '';
+            var dist = 115 - x;
+            if  ( dist < 0 ) 
+            {
+                negative = '-';
+                dist = dist * -1;
+            }
+            var rotate = Math.floor(Math.sqrt(dist));
+            $('#dinger').append('<img src="' + this.src + '" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
         },
         init: function()
         {
