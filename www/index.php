@@ -71,6 +71,10 @@
     <script src="http://local.denverpost.com/common/jquery/jquery-min.js"></script>
 </head>
 <body>
+    <script>
+        var iframe = '';
+        if ( document.location.hash === '#iframe' ) iframe = 1
+    </script>
     <script src="http://extras.denverpost.com/media/js/d3.v3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/misery.css" />
     <h2>Rockies Misery Index</h2>
@@ -83,64 +87,22 @@
     <?php if ( array_key_exists('FORM_URL', $_ENV) ): ?>
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
     <?php endif; ?>
-    <script>
-        $.getJSON( "output/responses.json", function( data ) {
-            var items = [];
-            $.each( data, function( key, val ) 
-            {
-                var timestamp = val['Timestamp'];
-                if ( val['Date'] !== '' ) timestamp = val['Date'];
 
-                var text = val['Bad Thing'] + ": " + timestamp;
-                if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "' target='_parent'>" + text + "</a>";
-
-                items.push( "<li id='" + key + "'>" + text + "</li>" );
-            });
-
-            items.reverse();
-            $( "<ul/>", {
-                html: items.join( "" )
-            }).appendTo( "#recently" );
-        });
-    </script>
 <h3>Misery, by day</h3>
 <svg class="chart" id="chart"></svg>
 <script>
 var data = [];
-var dates = {
-    start: new Date(2015, 5, 1),
-    current: new Date(),
-    delta: 0,
-    get_delta: function()
-    {
-        this.current.setHours(0);
-        this.current.setMinutes(0);
-        this.current.setSeconds(0);
-        this.current.setMilliseconds(0);
-
-        var delta = this.current - this.start;
-
-        this.delta = Math.round(delta / 1000 / 60 / 60/ 24) + 1;
-        return Math.round(delta / 1000 / 60 / 60/ 24) + 1;
-    },
-    init: function()
-    {
-        this.get_delta();
-    }
-};
-dates.init();
 
 $.getJSON( "output/scores.json", function( data ) {
     var items = [];
     $.each( data, function( key, val ) 
     {
-        console.log(key, val);
         var obj = {"count": val, "date": key};
         window.data.push(obj);
     });
 
 
-
+    // VISUALIZE THE MISERY
     // Dinger's tears.
     var tear = {
         src: 'http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_044312_dinger-tear70.gif',
@@ -183,10 +145,33 @@ $.getJSON( "output/scores.json", function( data ) {
     };
     tear.init();
 
+// CHART THE MISERY
+var dates = {
+    start: new Date(2015, 5, 1),
+    current: new Date(),
+    delta: 0,
+    get_delta: function()
+    {
+        this.current.setHours(0);
+        this.current.setMinutes(0);
+        this.current.setSeconds(0);
+        this.current.setMilliseconds(0);
+
+        var delta = this.current - this.start;
+
+        this.delta = Math.round(delta / 1000 / 60 / 60/ 24) + 1;
+        return Math.round(delta / 1000 / 60 / 60/ 24) + 1;
+    },
+    init: function()
+    {
+        this.get_delta();
+    }
+};
+dates.init();
 var $chart = $('#chart');
 var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
-var chart_width = window.dates.delta * 6;
+var chart_width = dates.delta * 6;
 
 var margin = { top: 20, right: 20, bottom: 30, left: 30 },
     width = $chart.width() - margin.left - margin.right,
@@ -271,6 +256,27 @@ chart.selectAll("bar")
     .attr("height", function(d) { return height - y(d.count); });
 
         });
+
+
+// RECENT MISERY
+        $.getJSON( "output/responses.json", function( data ) {
+            var items = [];
+            $.each( data, function( key, val ) 
+            {
+                var timestamp = val['Timestamp'];
+                if ( val['Date'] !== '' ) timestamp = val['Date'];
+
+                var text = val['Bad Thing'] + ": " + timestamp;
+                if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "' target='_parent'>" + text + "</a>";
+
+                items.push( "<li id='" + key + "'>" + text + "</li>" );
+            });
+
+            items.reverse();
+            $( "<ul/>", {
+                html: items.join( "" )
+            }).appendTo( "#recently" );
+        });
 </script>
 
     <h3>Recent Misery</h3>
@@ -286,5 +292,11 @@ chart.selectAll("bar")
         &bull; <a href="http://www.denverpost.com/broncos">Denver Broncos</a>
     </p>
     </footer>
+    <script>
+        if ( iframe === 1 )
+        {
+            $('h1, footer').remove()
+        }
+    </script>
 </body
 </html>
