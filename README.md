@@ -1,5 +1,6 @@
 # Misery Index
 Let's quantify how miserable the Colorado Rockies are, daily.
+
 ![Sad Dinger](http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif)
 
 
