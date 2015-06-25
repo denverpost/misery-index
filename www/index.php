@@ -185,14 +185,7 @@ $.getJSON( "output/scores.json", function( data ) {
         rand: function(floor, ceiling)
         {
             // Return a random number between floor and ceiling.
-            var num = -1;
-            while ( floor > num || num > ceiling )
-            {
-                var now = new Date();
-                num = now.getMilliseconds() + now.getSeconds();
-            }
-            console.log(num);
-            return num;
+            return Math.floor(Math.random() * (ceiling - floor)) + floor;
         },
         add: function(i)
         {
