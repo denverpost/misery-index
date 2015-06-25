@@ -73,12 +73,18 @@
 <body>
     <script>
         var iframe = '';
-        if ( document.location.hash === '#iframe' ) iframe = 1
+        var section = '';
+        if ( document.location.hash === '#iframe' ) iframe = 1;
+        if ( document.location.hash === '#section' ) 
+        {
+            iframe = 1;
+            section = 1;
+        }
     </script>
     <script src="js/d3.v3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/misery.css" />
     <h2>Rockies Misery Index</h2>
-    <p>How miserable are the Colorado Rockies today? We rate how miserable recent events have been and turn that into today's Misery Index, measured in Dinger's tears.</p>
+    <p id="intro">How miserable are the Colorado Rockies today? We rate how miserable recent events have been and turn that into today's Misery Index, measured in Dinger's tears.</p>
     <div id="dinger">
         <img src="http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif" alt="Sad Dinger" width="300" height="284" />
         <p>Dinger's crying <span id="tears">0</span> tear<span id="s">s</span> today.</p>
@@ -88,8 +94,10 @@
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
     <?php endif; ?>
 
-<h3>Misery, by day</h3>
-<svg class="chart" id="chart"></svg>
+    <section id="chart">
+        <h3>Misery, by day</h3>
+        <svg class="chart" id="chart"></svg>
+    </section>
 <script>
 var data = [];
 
@@ -279,9 +287,11 @@ chart.selectAll("bar")
         });
 </script>
 
-    <h3>Recent Misery</h3>
-    <div id="recently">
-    </div>
+    <section id="recent">
+        <h3>Recent Misery</h3>
+        <div id="recently">
+        </div>
+    </section>
 
 
     <footer>
@@ -295,7 +305,11 @@ chart.selectAll("bar")
     <script>
         if ( iframe === 1 )
         {
-            $('h1, h2, footer').remove()
+            $('h1, h2, footer').remove();
+        }
+        if ( section === 1 )
+        {
+            $('section').remove();
         }
     </script>
 </body
