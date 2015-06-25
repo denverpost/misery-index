@@ -1,0 +1,38 @@
+.chart 
+{ 
+    color: black; 
+    min-width: 220px;
+    width: 100%;
+    max-width: 960px;
+}
+.chart rect {
+  fill: #42298E;
+}
+
+.chart text {
+  fill: #666;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+.axis text {
+  font: 10px sans-serif;
+    color: #666;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+/* Hide all but the every-seventh tick and label on the x axis */
+g.x > g:nth-child(1n+0) { display:none; }
+g.x > g:nth-child(7n+1)
+{
+    display: block;
+}

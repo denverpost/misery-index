@@ -72,6 +72,7 @@
 </head>
 <body>
     <script src="http://extras.denverpost.com/media/js/d3.v3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/misery.css" />
     <h2>Rockies Misery Index</h2>
     <p>How miserable are the Colorado Rockies today? We rate how miserable recent events have been and turn that into today's Misery Index, measured in Dinger's tears.</p>
     <div id="dinger">
@@ -91,7 +92,7 @@
                 if ( val['Date'] !== '' ) timestamp = val['Date'];
 
                 var text = val['Bad Thing'] + ": " + timestamp;
-                if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "'>" + text + "</a>";
+                if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "' target='_parent'>" + text + "</a>";
 
                 items.push( "<li id='" + key + "'>" + text + "</li>" );
             });
@@ -104,46 +105,6 @@
     </script>
 <h3>Misery, by day</h3>
 <svg class="chart" id="chart"></svg>
-<style>
-.chart 
-{ 
-    color: black; 
-    min-width: 220px;
-    width: 100%;
-    max-width: 960px;
-}
-.chart rect {
-  fill: #42298E;
-}
-
-.chart text {
-  fill: #666;
-  font: 10px sans-serif;
-  text-anchor: middle;
-}
-.axis text {
-  font: 10px sans-serif;
-    color: #666;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
-}
-
-/* Hide all but the every-seventh tick and label on the x axis */
-g.x > g:nth-child(1n+0) { display:none; }
-g.x > g:nth-child(7n+1)
-{
-    display: block;
-}
-</style>
 <script>
 var data = [];
 var dates = {
@@ -217,7 +178,7 @@ $.getJSON( "output/scores.json", function( data ) {
                 this.add(i);
             }
             $('#tears').text(count);
-            if ( count == 1 ) ($('#s').text('');
+            if ( count == 1 ) $('#s').text('');
         }
     };
     tear.init();
