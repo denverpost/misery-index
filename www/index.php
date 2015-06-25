@@ -69,14 +69,14 @@
     </style>
     <link rel="stylesheet" type="text/css" href="http://extras.mnginteractive.com/live/css/site67/bartertown.css" />
     <script src="http://local.denverpost.com/common/jquery/jquery-min.js"></script>
-    <script src="js/d3.v3.min.js"></script>
 </head>
 <body>
-    <h1>Rockies Misery Index</h1>
+    <script src="http://extras.denverpost.com/media/js/d3.v3.min.js"></script>
+    <h2>Rockies Misery Index</h2>
     <p>How miserable are the Colorado Rockies today? We rate how miserable recent events have been and turn that into today's Misery Index, measured in Dinger's tears.</p>
     <div id="dinger">
         <img src="http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif" alt="Sad Dinger" width="300" height="284" />
-        <p>Dinger's crying <span id="tears">0</span> tears today.</p>
+        <p>Dinger's crying <span id="tears">0</span> tear<span id="s">s</span> today.</p>
     </div>
 
     <?php if ( array_key_exists('FORM_URL', $_ENV) ): ?>
@@ -102,7 +102,7 @@
             }).appendTo( "#recently" );
         });
     </script>
-<h2>Misery, by day</h2>
+<h3>Misery, by day</h3>
 <svg class="chart" id="chart"></svg>
 <style>
 .chart 
@@ -192,7 +192,7 @@ $.getJSON( "output/scores.json", function( data ) {
         {
             // Add a tear to Dinger's face.
             var x = this.rand(50,220);
-            var y = this.rand(210,300);
+            var y = this.rand(230,300);
 
             // Figure out how much to rotate the tear.
             // 115px's the center point. 
@@ -217,6 +217,7 @@ $.getJSON( "output/scores.json", function( data ) {
                 this.add(i);
             }
             $('#tears').text(count);
+            if ( count == 1 ) ($('#s').text('');
         }
     };
     tear.init();
@@ -311,18 +312,11 @@ chart.selectAll("bar")
         });
 </script>
 
-    <h2>Recent Misery</h2>
+    <h3>Recent Misery</h3>
     <div id="recently">
     </div>
 
 
-<style type="text/css">
-#dinger
-{
-    width: 100%;
-    height: 100%;
-}
-</style>
     <footer>
     <p>Copyright &copy; 2015 <a href="http://www.denverpost.com/">The Denver Post</a></p>
     <p>
