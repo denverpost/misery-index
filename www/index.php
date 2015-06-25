@@ -178,14 +178,38 @@ $.getJSON( "output/scores.json", function( data ) {
     });
 
 
+
     // Dinger's tears.
     var tear = {
         src: 'http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_044312_dinger-tear70.gif',
-        add: function()
+        rand: function(floor, ceiling)
+        {
+            // Return a random number between floor and ceiling.
+            var num = 0;
+            while ( floor > num < ceiling )
+            {
+                num = Date.prototype.getMilliseconds() + Date.prototype.getSeconds();
+            }
+            
+        },
+        add: function(i)
         {
             // Add a tear to Dinger's face.
+            
+        },
+        init: function()
+        {
+            // The number of tears is determined by the misery count of the last day.
+            var keys = Object.keys(data);
+            var key = keys.pop();
+            var count = data[key];
+            for ( i = 0; i < count; i ++ )
+            {
+                this.add(i);
+            }
         }
     };
+    tear.init();
 
 var $chart = $('#chart');
 var mobile_threshold = 500;
