@@ -75,7 +75,7 @@
         var iframe = '';
         if ( document.location.hash === '#iframe' ) iframe = 1
     </script>
-    <script src="http://extras.denverpost.com/media/js/d3.v3.min.js"></script>
+    <script src="js/d3.v3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/misery.css" />
     <h2>Rockies Misery Index</h2>
     <p>How miserable are the Colorado Rockies today? We rate how miserable recent events have been and turn that into today's Misery Index, measured in Dinger's tears.</p>
