@@ -73,6 +73,7 @@
 </head>
 <body>
     <h1>Rockies Misery Index</h1>
+    <p>How miserable are the Colorado Rockies today? We rate how miserable recent events have been and turn that into today's Misery Index, measured in Dinger's tears.</p>
     <div id="dinger">
         <img src="http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif" alt="Sad Dinger" width="300" height="284" />
         <p>Dinger's crying <span id="tears">0</span> tears today.</p>
