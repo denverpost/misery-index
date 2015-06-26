@@ -87,8 +87,8 @@
     <p id="intro">How miserable are the Colorado Rockies today? We rate how miserable recent events have been and turn that into today's Misery Index, measured in Dinger's tears. <em>Illustration by Severiano Galv&aacute;n</em></p>
     <div id="dinger">
         <img src="http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif" alt="Sad Dinger" width="300" height="284" />
-        <p>Dinger's crying <span id="tears">0</span> tear<span id="s">s</span> today.</p>
     </div>
+    <p>Dinger's crying <span id="tears">0</span> tear<span id="s">s</span> today.</p>
 
     <?php if ( array_key_exists('FORM_URL', $_ENV) ): ?>
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
@@ -122,8 +122,8 @@ $.getJSON( "output/scores.json", function( data ) {
         add: function(i)
         {
             // Add a tear to Dinger's face.
-            var x = this.rand(50,220);
-            var y = this.rand(230,300);
+            var x = this.rand(50,200);
+            var y = this.rand(160,260);
 
             // Figure out how much to rotate the tear.
             // 115px's the center point. 
@@ -135,7 +135,7 @@ $.getJSON( "output/scores.json", function( data ) {
                 dist = dist * -1;
             }
             var rotate = Math.floor(Math.sqrt(dist));
-            $('#dinger').append('<img src="' + this.src + '" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
+            $('#dinger').prepend('<img src="' + this.src + '" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
         },
         init: function()
         {
