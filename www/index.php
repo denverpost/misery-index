@@ -113,6 +113,7 @@ $.getJSON( "output/scores.json", function( data ) {
     // VISUALIZE THE MISERY
     // Dinger's tears.
     var tear = {
+        dinger_top: $('#dinger').position()['top'],
         src: 'http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_044312_dinger-tear70.gif',
         rand: function(floor, ceiling)
         {
@@ -123,7 +124,7 @@ $.getJSON( "output/scores.json", function( data ) {
         {
             // Add a tear to Dinger's face.
             var x = this.rand(50,200);
-            var y = this.rand(160,260);
+            var y = this.rand(160+this.dinger_top,260+this.dinger_top);
 
             // Figure out how much to rotate the tear.
             // 115px's the center point. 
