@@ -90,9 +90,11 @@
     </div>
     <p>Dinger's crying <span id="tears">0</span> tear<span id="s">s</span> today.</p>
 
+<!--
     <?php if ( array_key_exists('FORM_URL', $_ENV) ): ?>
     <iframe src="<?php echo $_ENV['FORM_URL']; ?>" seamless id="input"></iframe>
     <?php endif; ?>
+-->
 
     <section id="chart">
         <h3>Misery, by day</h3>
@@ -289,8 +291,8 @@ chart.selectAll("bar")
     <p>Copyright &copy; 2015 <a href="http://www.denverpost.com/">The Denver Post</a></p>
     <p>
         <a href="http://www.denverpost.com/weather#denver">Denver Weather</a> 
-        &bull; <a href="http://dptv.denverpost.com/">Denver TV News</a>
-        &bull; <a href="http://www.denverpost.com/broncos">Denver Broncos</a>
+        &bull; <a href="http://www.denverpost.com/weathernews">Colorado Weather News</a>
+        &bull; <a href="http://www.denverpost.com/rockies">Colorado Rockies News</a>
     </p>
     </footer>
     <script>
