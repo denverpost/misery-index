@@ -177,7 +177,7 @@ var dates = {
 };
 dates.init();
 var $chart = $('#chart');
-var mobile_threshold = 500;
+//var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
 var chart_width = dates.delta * 6;
 
@@ -218,18 +218,8 @@ data.forEach(function(d)
     var ordinal = format_ordinal(d.date);
     d.date = format_axis(d.date);
 
-    if ( width < mobile_threshold )
-    {
-        var year_format = d3.time.format("%Y");
-        var year = year_format(date_orig);
-        year = year.replace('2015', '');
-        var month_letter = d.date[0];
-        d.date = month_letter + year;
-    }
-    else
-    {
-        d.date = d.date.replace('2015', '\'');
-    }
+    d.date = d.date.replace('2015', '\'');
+
     d.count = +d.count;
     previous_date = d.date;
 });
