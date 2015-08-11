@@ -118,13 +118,15 @@ class Misery:
                 continue
             record = dict(zip(keys, row))
 
+            day = None
             if 'Timestamp' in record:
-                record = self.handle_timestamp(record)
+                record, day = self.handle_timestamp(record)
 
             # We want to know how many days ago this happened,
             # and add that to the record.
-            days_ago = datetime.today() - day
-            record['ago'] = days_ago.days
+            if day:
+                days_ago = datetime.today() - day
+                record['ago'] = days_ago.days
             
             recordwriter.writerow(row)
             records += [record]
@@ -146,8 +148,9 @@ class Misery:
             day = datetime.strptime(timestamp, "%m/%d/%Y")
             record['unixtime'] = int(time.mktime(day.timetuple()))
         except:
+            day = None
             record['unixtime'] = 0
-        return record
+        return record, day
 
     def publish_scores(self):
         """
