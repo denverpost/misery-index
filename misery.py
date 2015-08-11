@@ -118,19 +118,8 @@ class Misery:
                 continue
             record = dict(zip(keys, row))
 
-            # Turn the date into a timestamp.
-            try:
-                timestamp = record['Timestamp'].split(' ')[0]
-                record['Timestamp'] = timestamp
-                if record['Date'] == '':
-                    # We do this so we can use the Date field from here on out.
-                    record['Date'] = record['Timestamp']
-                else:
-                    timestamp = record['Date']
-                day = datetime.strptime(timestamp, "%m/%d/%Y")
-                record['unixtime'] = int(time.mktime(day.timetuple()))
-            except:
-                record['unixtime'] = 0
+            if 'Timestamp' in record:
+                record = self.handle_timestamp(record)
 
             # We want to know how many days ago this happened,
             # and add that to the record.
@@ -141,6 +130,24 @@ class Misery:
             records += [record]
 
         return records
+
+    def handle_timestamp(self, record):
+        """ We may need this code more than once, so:
+            """
+        # Turn the date into a timestamp.
+        try:
+            timestamp = record['Timestamp'].split(' ')[0]
+            record['Timestamp'] = timestamp
+            if record['Date'] == '':
+                # We do this so we can use the Date field from here on out.
+                record['Date'] = record['Timestamp']
+            else:
+                timestamp = record['Date']
+            day = datetime.strptime(timestamp, "%m/%d/%Y")
+            record['unixtime'] = int(time.mktime(day.timetuple()))
+        except:
+            record['unixtime'] = 0
+        return record
 
     def publish_scores(self):
         """
