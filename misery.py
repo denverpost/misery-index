@@ -90,41 +90,27 @@ class Misery:
             record = dict(zip(keys, row))
             # {'Bad Thing': 'Test two', 'Timestamp': '5/27/2015 17:01:39', 'URL': '', 'Value': '7', 'Date': '5/26/2015'}
 
-            # We write lines one-by-one. If we have filters, we run
-            # through them here to see if we're handling a record we
-            # shouldn't be writing.
-            publish = True
-            if self.sheet.filters:
-                for item in self.sheet.filters:
-                    # Special handling for filtering by years. Hard-coded.
-                    if item['key'] == 'Year':
-                        if item['value'] not in record['Date']:
-                            publish = False
-                    elif record[item['key']] != item['value']:
-                        publish = False
+            # Turn the date into a timestamp.
+            try:
+                timestamp = record['Timestamp'].split(' ')[0]
+                record['Timestamp'] = timestamp
+                if record['Date'] == '':
+                    # We do this so we can use the Date field from here on out.
+                    record['Date'] = record['Timestamp']
+                else:
+                    timestamp = record['Date']
+                day = datetime.strptime(timestamp, "%m/%d/%Y")
+                record['unixtime'] = int(time.mktime(day.timetuple()))
+            except:
+                record['unixtime'] = 0
 
-            if publish:
-                # Turn the date into a timestamp.
-                try:
-                    timestamp = record['Timestamp'].split(' ')[0]
-                    record['Timestamp'] = timestamp
-                    if record['Date'] == '':
-                        # We do this so we can use the Date field from here on out.
-                        record['Date'] = record['Timestamp']
-                    else:
-                        timestamp = record['Date']
-                    day = datetime.strptime(timestamp, "%m/%d/%Y")
-                    record['unixtime'] = int(time.mktime(day.timetuple()))
-                except:
-                    record['unixtime'] = 0
-
-                # We want to know how many days ago this happened,
-                # and add that to the record.
-                days_ago = datetime.today() - day
-                record['ago'] = days_ago.days
-                
-                recordwriter.writerow(row)
-                records += [record]
+            # We want to know how many days ago this happened,
+            # and add that to the record.
+            days_ago = datetime.today() - day
+            record['ago'] = days_ago.days
+            
+            recordwriter.writerow(row)
+            records += [record]
 
         # Now build the day-by-day Misery Indexes.
         # We'll have a list of date/value pairs by the end of this.
