@@ -105,16 +105,16 @@ class Misery:
         return True
 
     def get_records(self, rows):
-        """ Put together a record set for the main Misery sheet.
+        """ Put together a record set from the main Misery sheet.
             # {'Bad Thing': 'Test two', 'Timestamp': '5/27/2015 17:01:39', 'URL': '', 'Value': '7', 'Date': '5/26/2015'}
             """
         recordwriter = UnicodeWriter(self.fn['csv'], delimiter=',', 
                                      quotechar='"', quoting=csv.QUOTE_MINIMAL)
         keys = rows[0]
+        recordwriter.writerow(keys)
         records = []
         for i, row in enumerate(rows):
             if i == 0:
-                recordwriter.writerow(keys)
                 continue
             record = dict(zip(keys, row))
 
@@ -137,6 +137,7 @@ class Misery:
         """ We may need this code more than once, so:
             """
         # Turn the date into a timestamp.
+        day = None
         try:
             timestamp = record['Timestamp'].split(' ')[0]
             record['Timestamp'] = timestamp
@@ -148,7 +149,6 @@ class Misery:
             day = datetime.strptime(timestamp, "%m/%d/%Y")
             record['unixtime'] = int(time.mktime(day.timetuple()))
         except:
-            day = None
             record['unixtime'] = 0
         return record, day
 
