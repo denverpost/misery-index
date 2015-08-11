@@ -72,23 +72,51 @@ class Misery:
 
         self.sheet.build_filename()
 
-        rows = self.sheet.sheet.get_all_values()
-        keys = rows[0]
-        fn = {
+        self.fn = {
             'json': open('%s/output/%s.json' % (self.sheet.directory, self.sheet.filename), 'wb'),
             'jsonp': open('%s/output/%s.jsonp' % (self.sheet.directory, self.sheet.filename), 'wb'),
             'csv': open('%s/output/%s.csv' % (self.sheet.directory, self.sheet.filename), 'wb')
         }
-        recordwriter = UnicodeWriter(fn['csv'], delimiter=',', 
+        rows = self.sheet.sheet.get_all_values()
+        records = self.get_records(rows)
+
+        # Now build the day-by-day Misery Indexes.
+        # We'll have a list of date/value pairs by the end of this.
+        items = []
+        for record in records:
+            items.append((record['Date'], record['Value']))
+        self.items = items
+        scores = self.calc_score()
+        if scores:
+            fh = open('output/scores.json', 'wb')
+            json.dump(scores, fh)
+            fh.close()
+            content = json.dumps(scores)
+            fh = open('output/scores.jsonp', 'wb')
+            fh.write('misery_scores_callback(%s);' % content)
+            fh.close()
+            
+
+        if records:
+            json.dump(records, self.fn['json'])
+            content = json.dumps(records)
+            self.fn['jsonp'].write('misery_callback(%s);' % content)
+
+        return True
+
+    def get_records(self, rows):
+        """ Put together a record set for the main Misery sheet.
+            # {'Bad Thing': 'Test two', 'Timestamp': '5/27/2015 17:01:39', 'URL': '', 'Value': '7', 'Date': '5/26/2015'}
+            """
+        recordwriter = UnicodeWriter(self.fn['csv'], delimiter=',', 
                                      quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        keys = rows[0]
         records = []
         for i, row in enumerate(rows):
             if i == 0:
-                keys = row
                 recordwriter.writerow(keys)
                 continue
             record = dict(zip(keys, row))
-            # {'Bad Thing': 'Test two', 'Timestamp': '5/27/2015 17:01:39', 'URL': '', 'Value': '7', 'Date': '5/26/2015'}
 
             # Turn the date into a timestamp.
             try:
@@ -112,29 +140,12 @@ class Misery:
             recordwriter.writerow(row)
             records += [record]
 
-        # Now build the day-by-day Misery Indexes.
-        # We'll have a list of date/value pairs by the end of this.
-        items = []
-        for record in records:
-            items.append((record['Date'], record['Value']))
-        self.items = items
-        scores = self.calc_score()
-        if scores:
-            fh = open('output/scores.json', 'wb')
-            json.dump(scores, fh)
-            fh.close()
-            content = json.dumps(scores)
-            fh = open('output/scores.jsonp', 'wb')
-            fh.write('misery_scores_callback(%s);' % content)
-            fh.close()
-            
+        return records
 
-        if records:
-            json.dump(records, fn['json'])
-            content = json.dumps(records)
-            fn['jsonp'].write('misery_callback(%s);' % content)
-
-        return True
+    def publish_scores(self):
+        """
+            """
+        pass
 
     def calc_score(self):
         """ Given a dict of date/score tuples, return a per-day list of date/score tuples.
