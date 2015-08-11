@@ -205,7 +205,7 @@ class Misery:
 def main(args):
     """ 
         """
-    sheet = Sheet('Misery Index', 'responses')
+    sheet = Sheet('Misery Index', args.name)
     sheet.set_options(args)
     misery = Misery(sheet)
     misery.publish()
@@ -221,6 +221,7 @@ def build_parser(args):
                                                     had done to the team.''',
                                      epilog='')
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
+    parser.add_argument("-n", "--name", dest="name", default='responses')
     return parser.parse_args()
 
 if __name__ == '__main__':
