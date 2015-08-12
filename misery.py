@@ -171,37 +171,85 @@ class Misery:
         # [('6/1/2015', '2'), ('6/2/2015', '10'), ('6/3/2015', '4')]
 
         # Consolidate the dates so we can make a set with this object.
-        event_days = OrderedDict()
-        distinct_days = OrderedDict()
+        event_items = OrderedDict()
+        distinct_items = OrderedDict()
         for item in self.items:
-            if item[0] not in event_days:
-                event_days[item[0]] = 0
-        first_day = datetime.strptime(next(iter(event_days)), "%m/%d/%Y").date()
+            if item[0] not in event_items:
+                event_items[item[0]] = 0
+        first_item = datetime.strptime(next(iter(event_items)), "%m/%d/%Y").date()
         today = date.today()
 
+        # Fill out any empty dates with zero-values
         i = 0
         while True:
-            day = first_day + timedelta(days=i)
-            day_str = date.strftime(day, "%-m/%-d/%Y")
-            distinct_days[day_str] = 0
+            item = first_item + timedelta(days=i)
+            item_str = date.strftime(item, "%-m/%-d/%Y")
+            distinct_items[item_str] = 0
             i += 1
-            if day == today:
+            if item == today:
                 break
 
         # Add up the raw score.
         for item in self.items:
-            distinct_days[item[0]] += int(item[1])
+            distinct_items[item[0]] += int(item[1])
 
         # Now loop through the raw score, and calculate the total scores.
         # The next day's score is equal to half of the previous day's score plus any new events.
         previous_score = 0
-        for day in iter(distinct_days):
-            score = round(previous_score/float(2.1)) + distinct_days[day]
-            distinct_days[day] = score
+        for item in iter(distinct_items):
+            score = round(previous_score/float(2.1)) + distinct_items[item]
+            distinct_items[item] = score
             previous_score = score
 
-        return distinct_days
+        return distinct_items
 
+
+class MiseryLive(Misery):
+
+    def calc_score(self):
+        """ Given a dict of date/score tuples, return a per-day list of date/score tuples.
+            We use an OrderedDict so we know what the first day of events is --
+            we can't be certain that something happens on every day, so we use
+            the first-day to populate a dict with every date between then and now.
+
+            Keep in mind more than one event can happen per day.
+            Also keep in mind that an event on one day still affects the 
+            next day's score -- it's worth half what it was worth the day before.
+            """
+        # items is expected to look something like
+        # [('1', '2'), ('1', '10'), ('4', '4')]
+
+        event_items = OrderedDict()
+        distinct_items = OrderedDict()
+        for item in self.items:
+            if item[0] not in event_items:
+                event_items[item[0]] = 0
+        first_item = 1
+        endpoint = 9
+
+        # Fill out any empty dates with zero-values
+        i = 0
+        while True:
+            item = first_item + timedelta(days=i)
+            item_str = date.strftime(item, "%-m/%-d/%Y")
+            distinct_items[item_str] = 0
+            i += 1
+            if item == today:
+                break
+
+        # Add up the raw score.
+        for item in self.items:
+            distinct_items[item[0]] += int(item[1])
+
+        # Now loop through the raw score, and calculate the total scores.
+        # The next day's score is equal to half of the previous day's score plus any new events.
+        previous_score = 0
+        for item in iter(distinct_items):
+            score = round(previous_score/float(2.1)) + distinct_items[item]
+            distinct_items[item] = score
+            previous_score = score
+
+        return distinct_items
 def main(args):
     """ 
         """
