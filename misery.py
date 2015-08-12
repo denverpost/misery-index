@@ -220,42 +220,30 @@ class MiseryLive(Misery):
         # [('1', '2'), ('1', '10'), ('4', '4')]
 
         event_items = OrderedDict()
-        distinct_items = OrderedDict()
+        distinct_items = OrderedDict({'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0})
         for item in self.items:
             if item[0] not in event_items:
                 event_items[item[0]] = 0
         first_item = 1
         endpoint = 9
 
-        # Fill out any empty dates with zero-values
-        i = 0
-        while True:
-            item = first_item + timedelta(days=i)
-            item_str = date.strftime(item, "%-m/%-d/%Y")
-            distinct_items[item_str] = 0
-            i += 1
-            if item == today:
-                break
-
         # Add up the raw score.
         for item in self.items:
             distinct_items[item[0]] += int(item[1])
 
-        # Now loop through the raw score, and calculate the total scores.
-        # The next day's score is equal to half of the previous day's score plus any new events.
-        previous_score = 0
-        for item in iter(distinct_items):
-            score = round(previous_score/float(2.1)) + distinct_items[item]
-            distinct_items[item] = score
-            previous_score = score
-
         return distinct_items
+
 def main(args):
     """ 
         """
     sheet = Sheet('Misery Index', args.name)
     sheet.set_options(args)
-    misery = Misery(sheet)
+
+    if args.live:
+        misery = MiseryLive(sheet)
+    else:
+        misery = Misery(sheet)
+
     misery.publish()
 
 def build_parser(args):
@@ -270,6 +258,7 @@ def build_parser(args):
                                      epilog='')
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
     parser.add_argument("-n", "--name", dest="name", default='responses')
+    parser.add_argument("-l", "--live", dest="live", default=False, action="store_true")
     return parser.parse_args()
 
 if __name__ == '__main__':
