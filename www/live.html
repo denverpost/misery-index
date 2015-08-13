@@ -71,13 +71,15 @@ g.x > g:nth-child(7n+1)
 {
     display: block;
 }
-span.inning
+span.inning, span.score
 {
     color: #999;
     font-size: .8em;
 }
 span.inning::before { content: "(inning "; }
 span.inning::after { content: ")"; }
+span.score::before { content: "("; }
+span.score::after { content: ")"; }
     </style>
 <!--
     <link rel="stylesheet" type="text/css" href="http://extras.mnginteractive.com/live/css/site67/bartertown.css" />
@@ -99,7 +101,7 @@ span.inning::after { content: ")"; }
     <link rel="stylesheet" type="text/css" href="css/misery.css" />
     <h2>Rockies Misery Index Live</h2>
     <p id="intro">
-        How miserable are the Colorado Rockies this inning? We rate how miserable this game has been and turn that into the Misery Index, measured in Dinger's tears.
+        How miserable are the Colorado Rockies this game? We rate how miserable this game has been, inning by inning, and turn that into the Misery Index, measured in Dinger's tears.
     </p>
     <div id="dinger">
         <img src="http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif" alt="Sad Dinger" width="300" height="284" />
@@ -135,9 +137,12 @@ function update_misery()
                 if ( val['Current Inning'] != '' ) current_inning = val['Current Inning'];
                 if ( val['Reload'] != '' ) document.location.reload();
 
+                // Current score
+                var score_slug = '';
+                if ( val['Rockies Score'] !== '' ) score_slug = "<span class='score'>Rockies " + val['Rockies Score'] + ", Mets " + val['Opponent Score'] + "</span>";
                 if ( val['Date'] !== '' ) timestamp = "<span class='inning'>" + val['Date'] + "</span>";
 
-                var text = val['Bad Thing'] + " " + timestamp;
+                var text = val['Bad Thing'] + " " + timestamp + score_slug;
 
                 // Logic to intersperse live blog with Bad Things
                 if ( val['Value'] === '0' )
