@@ -11,7 +11,7 @@
 
     <meta name="distribution" content="global" />
     <meta name="robots" content="index" />
-    <meta name="title" content="Misery Index" />
+    <meta name="title" content="Colorado Rockies Misery Index /*LIVE*/" />
     <meta name="language" content="en, sv" />
     <meta name="Copyright" content="Copyright &copy; The Denver Post." />
 
@@ -133,6 +133,7 @@ function update_misery()
             {
                 records.push(val);
                 if ( val['Current Inning'] != '' ) current_inning = val['Current Inning'];
+                if ( val['Reload'] != '' ) document.location.reload();
 
                 if ( val['Date'] !== '' ) timestamp = "<span class='inning'>" + val['Date'] + "</span>";
 
