@@ -88,11 +88,15 @@ class Misery:
         self.items = items
         scores = self.calc_score()
         if scores:
-            fh = open('output/scores.json', 'wb')
+            fn = 'scores'
+            if 'live' in self.sheet.filename:
+                fn += '-live'
+
+            fh = open('output/%s.json' % fn, 'wb')
             json.dump(scores, fh)
             fh.close()
             content = json.dumps(scores)
-            fh = open('output/scores.jsonp', 'wb')
+            fh = open('output/%s.jsonp' % fn, 'wb')
             fh.write('misery_scores_callback(%s);' % content)
             fh.close()
             

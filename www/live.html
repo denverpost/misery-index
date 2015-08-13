@@ -66,6 +66,11 @@
                 margin-right: 0;
             }
         }
+g.x > g:nth-child(1n+0) { display:block!important; }
+g.x > g:nth-child(7n+1)
+{
+    display: block;
+}
     </style>
 <!--
     <link rel="stylesheet" type="text/css" href="http://extras.mnginteractive.com/live/css/site67/bartertown.css" />
@@ -92,17 +97,51 @@
     <div id="dinger">
         <img src="http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif" alt="Sad Dinger" width="300" height="284" />
         <p>Dinger's crying <span id="tears">0</span> tear<span id="s">s</span> this inning.</p>
+        <span class="tears"></span>
     </div>
 
 
-    <section id="chart">
+    <section id="chart-section">
         <h3>Misery, by inning</h3>
         <svg class="chart" id="chart"></svg>
     </section>
 <script>
-var data = [];
+update_misery();
+var refresh_every = 15 * 1000;
+var misery_interval = window.setInterval(function() { update_misery() }, refresh_every);
 
-$.getJSON( "output/scores.json", function( data ) {
+
+var data = [];
+var records = [];
+var current_inning = 0;
+function update_misery()
+{
+
+// RECENT MISERY
+        $.getJSON( "output/live-20150813.json", function( data ) {
+            $('#recently').html('');
+            var items = [];
+            $.each( data, function( key, val ) 
+            {
+                records.push(val);
+                if ( val['Current Inning'] != '' ) current_inning = val['Current Inning'];
+
+                var timestamp = val['Timestamp'];
+                if ( val['Date'] !== '' ) timestamp = val['Date'];
+
+                var text = val['Bad Thing'] + ": " + timestamp;
+
+                items.push( "<li id='" + key + "'>" + text + "</li>" );
+            });
+
+            items.reverse();
+            $( "<ul/>", {
+                html: items.join( "" )
+            }).appendTo( "#recently" );
+        });
+
+// TEARS AND CHART
+$.getJSON( "output/scores-live.json", function( data ) {
     var items = [];
     $.each( data, function( key, val ) 
     {
@@ -136,14 +175,15 @@ $.getJSON( "output/scores.json", function( data ) {
                 dist = dist * -1;
             }
             var rotate = Math.floor(Math.sqrt(dist));
-            $('#dinger').append('<img src="' + this.src + '" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
+            $('#dinger .tears').append('<img src="' + this.src + '" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
         },
         init: function()
         {
-            // The number of tears is determined by the misery count of the last day.
+            // The number of tears is determined by the misery count of the record marked "Current Inning"
             var keys = Object.keys(data);
             var key = keys.pop();
-            var count = data[key];
+            var count = data[current_inning];
+            $('#dinger .tears').html('');
             for ( i = 0; i < count; i ++ )
             {
                 this.add(i);
@@ -154,33 +194,11 @@ $.getJSON( "output/scores.json", function( data ) {
     };
     tear.init();
 
-// CHART THE MISERY
-var dates = {
-    start: new Date(2015, 5, 1),
-    current: new Date(),
-    delta: 0,
-    get_delta: function()
-    {
-        this.current.setHours(0);
-        this.current.setMinutes(0);
-        this.current.setSeconds(0);
-        this.current.setMilliseconds(0);
-
-        var delta = this.current - this.start;
-
-        this.delta = Math.round(delta / 1000 / 60 / 60/ 24) + 1;
-        return Math.round(delta / 1000 / 60 / 60/ 24) + 1;
-    },
-    init: function()
-    {
-        this.get_delta();
-    }
-};
-dates.init();
+$('#chart').html('');
 var $chart = $('#chart');
 var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
-var chart_width = dates.delta * 6;
+var chart_width = 400;
 
 var margin = { top: 20, right: 20, bottom: 30, left: 30 },
     width = $chart.width() - margin.left - margin.right,
@@ -211,26 +229,6 @@ var data = window.data;
 
 data.forEach(function(d) 
 {
-    var format = d3.time.format("%m/%d/%Y");
-    var format_axis = d3.time.format("%b %-d");
-    var format_ordinal = d3.time.format("%-j");
-    d.date = format.parse(d.date);
-    var date_orig = d.date;
-    var ordinal = format_ordinal(d.date);
-    d.date = format_axis(d.date);
-
-    if ( width < mobile_threshold )
-    {
-        var year_format = d3.time.format("%Y");
-        var year = year_format(date_orig);
-        year = year.replace('2015', '');
-        var month_letter = d.date[0];
-        d.date = month_letter + year;
-    }
-    else
-    {
-        d.date = d.date.replace('2015', '\'');
-    }
     d.count = +d.count;
     previous_date = d.date;
 });
@@ -260,36 +258,18 @@ chart.selectAll("bar")
     .attr("class", "bar")
     .attr("x", function(d) { return x(d.date); })
     //.attr("width", x.rangeBand())
-    .attr("width", 5)
+    .attr("width", 40)
     .attr("y", function(d) { return y(d.count); })
     .attr("height", function(d) { return height - y(d.count); });
 
         });
 
 
-// RECENT MISERY
-        $.getJSON( "output/responses.json", function( data ) {
-            var items = [];
-            $.each( data, function( key, val ) 
-            {
-                var timestamp = val['Timestamp'];
-                if ( val['Date'] !== '' ) timestamp = val['Date'];
-
-                var text = val['Bad Thing'] + ": " + timestamp;
-                if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "' target='_parent'>" + text + "</a>";
-
-                items.push( "<li id='" + key + "'>" + text + "</li>" );
-            });
-
-            items.reverse();
-            $( "<ul/>", {
-                html: items.join( "" )
-            }).appendTo( "#recently" );
-        });
+}
 </script>
 
     <section id="recent">
-        <h3>Recent Misery</h3>
+        <h3>Inning-By-Inning Misery</h3>
         <div id="recently">
         </div>
     </section>
