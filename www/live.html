@@ -71,6 +71,13 @@ g.x > g:nth-child(7n+1)
 {
     display: block;
 }
+span.inning
+{
+    color: #999;
+    font-size: .8em;
+}
+span.inning::before { content: "(inning "; }
+span.inning::after { content: ")"; }
     </style>
 <!--
     <link rel="stylesheet" type="text/css" href="http://extras.mnginteractive.com/live/css/site67/bartertown.css" />
@@ -127,10 +134,9 @@ function update_misery()
                 records.push(val);
                 if ( val['Current Inning'] != '' ) current_inning = val['Current Inning'];
 
-                var timestamp = val['Timestamp'];
-                if ( val['Date'] !== '' ) timestamp = val['Date'];
+                if ( val['Date'] !== '' ) timestamp = "<span class='inning'>" + val['Date'] + "</span>";
 
-                var text = val['Bad Thing'] + ": " + timestamp;
+                var text = val['Bad Thing'] + " " + timestamp;
 
                 // Logic to intersperse live blog with Bad Things
                 if ( val['Value'] === '0' )
