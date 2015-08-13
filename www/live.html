@@ -121,6 +121,7 @@ function update_misery()
         $.getJSON( "output/live-20150813.json", function( data ) {
             $('#recently').html('');
             var items = [];
+            records = [];
             $.each( data, function( key, val ) 
             {
                 records.push(val);
@@ -131,7 +132,15 @@ function update_misery()
 
                 var text = val['Bad Thing'] + ": " + timestamp;
 
-                items.push( "<li id='" + key + "'>" + text + "</li>" );
+                // Logic to intersperse live blog with Bad Things
+                if ( val['Value'] === '0' )
+                {
+                    items.push( "<p>" + val['Comment'] + "</p>" );
+                }
+                else
+                {
+                    items.push( "<li id='" + key + "'>" + text + "</li>" );
+                }
             });
 
             items.reverse();
@@ -143,6 +152,7 @@ function update_misery()
 // TEARS AND CHART
 $.getJSON( "output/scores-live.json", function( data ) {
     var items = [];
+    window.data = [];
     $.each( data, function( key, val ) 
     {
         var obj = {"count": val, "date": key};
