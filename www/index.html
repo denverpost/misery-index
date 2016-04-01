@@ -124,23 +124,19 @@
         <h3>Misery, by day</h3>
         <svg class="chart" id="chart"></svg>
     </section>
-<script>
-var data = [];
-var fn = {
-    scores: 'output/scores-2015.json',
-    recent: 'output/responses-2015.json'
-}
-var start_date = new Date(2015, 5, 1);
-</script>
-<script src="js/misery.js"></script>
-
-<script>
-</script>
+    <script>
+        var data = [];
+        var fn = {
+            scores: 'output/scores-2015.json',
+            recent: 'output/responses-2015.json'
+        }
+        var start_date = new Date(2015, 5, 1);
+    </script>
+    <script src="js/misery.js"></script>
 
     <section id="recent">
         <h3>Recent Misery</h3>
-        <div id="recently">
-        </div>
+        <div id="recently"></div>
     </section>
 
             <div class="rightRail sidebarcol small-12 large-3 columns" id="rightRail">
