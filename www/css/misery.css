@@ -87,4 +87,9 @@ footer p, #content-footer p { text-align: center; }
         width: 100%!important; 
         font-size: 2em!important;
     }
+    /* We want bullets on list items on mobile to make lists more readable. */
+    .row ul {
+        list-style-type: disc;
+        list-style-position: inside!important;
+    }
 }
