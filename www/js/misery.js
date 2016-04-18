@@ -41,7 +41,8 @@ $.getJSON( fn['scores'], function( data ) {
         },
         init: function()
         {
-            // The number of tears is determined by the misery count of the last day.
+            // The number of tears is determined by the misery count of the
+            // last day we have a score for.
             var keys = Object.keys(data);
             var key = keys.pop();
             var count = data[key];
@@ -121,7 +122,7 @@ data.forEach(function(d)
     var ordinal = format_ordinal(d.date);
     d.date = format_axis(d.date);
 
-    d.date = d.date.replace('2015', '\'');
+    d.date = d.date.replace(season_year, '\'');
 
     d.count = +d.count;
     previous_date = d.date;
