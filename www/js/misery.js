@@ -78,8 +78,8 @@ var misery_dates = {
         this.get_delta();
     }
 };
-
 misery_dates.init();
+
 var $chart = $('#chart');
 //var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
@@ -126,6 +126,7 @@ data.forEach(function(d)
 
     d.count = +d.count;
     previous_date = d.date;
+console.log(d.date, d.count);
 });
 
 x.domain(data.map(function(d) { return d.date; }));
