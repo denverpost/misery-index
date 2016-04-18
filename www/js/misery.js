@@ -57,7 +57,7 @@ $.getJSON( fn['scores'], function( data ) {
     tear.init();
 
 // CHART THE MISERY
-var dates = {
+var misery_dates = {
     start: start_date,
     current: new Date(),
     delta: 0,
@@ -79,11 +79,11 @@ var dates = {
     }
 };
 
-dates.init();
+misery_dates.init();
 var $chart = $('#chart');
 //var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
-var chart_width = dates.delta * 6;
+var chart_width = misery_dates.delta * 6;
 
 var margin = { top: 20, right: 20, bottom: 30, left: 30 },
     width = $chart.width() - margin.left - margin.right,
