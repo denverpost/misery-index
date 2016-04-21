@@ -59,6 +59,7 @@ $.getJSON( fn['scores'], function( data ) {
 // CHART THE MISERY
 var misery_dates = {
     start: start_date,
+    end: end_date,
     current: new Date(),
     delta: 0,
     get_delta: function()
@@ -75,6 +76,7 @@ var misery_dates = {
     },
     init: function()
     {
+        if ( this.current > this.end ) this.current = this.end;
         this.get_delta();
     }
 };
@@ -83,8 +85,7 @@ misery_dates.init();
 var $chart = $('#chart');
 //var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
-var chart_width = misery_dates.delta * 6;
-console.log(misery_dates);
+var chart_width = misery_dates.delta * 5;
 
 var margin = { top: 20, right: 20, bottom: 30, left: 30 },
     width = $chart.width() - margin.left - margin.right,
