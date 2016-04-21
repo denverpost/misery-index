@@ -84,6 +84,7 @@ var $chart = $('#chart');
 //var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
 var chart_width = misery_dates.delta * 6;
+console.log(misery_dates);
 
 var margin = { top: 20, right: 20, bottom: 30, left: 30 },
     width = $chart.width() - margin.left - margin.right,
@@ -126,7 +127,6 @@ data.forEach(function(d)
 
     d.count = +d.count;
     previous_date = d.date;
-console.log(d.date, d.count);
 });
 
 x.domain(data.map(function(d) { return d.date; }));
