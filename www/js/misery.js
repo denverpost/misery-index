@@ -101,13 +101,20 @@ var misery_dates = {
 
         var delta = this.current - this.start;
 
-        this.delta = Math.round(delta / 1000 / 60 / 60/ 24) + 1;
-        return Math.round(delta / 1000 / 60 / 60/ 24) + 1;
+        this.delta = Math.round(delta / 1000 / 60 / 60 / 24) + 1;
+        return Math.round(delta / 1000 / 60 / 60 / 24) + 1;
     },
     init: function()
     {
         if ( this.current > this.end ) this.current = this.end;
         this.get_delta();
+
+        // Get the days since
+        if ( this.last_misery != '' )
+        {
+            this.days_since_last_misery = Math.round( ( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24) + 1;
+            if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
+        }
     }
 };
 misery_dates.init();
@@ -195,5 +202,3 @@ chart.selectAll("bar")
     .attr("height", function(d) { return height - y(d.count); });
 
         });
-
-
