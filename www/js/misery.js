@@ -85,7 +85,7 @@ $.getJSON( fn['scores'], function( data ) {
     tear.init();
 
     // CHART THE MISERY
-    var misery_dates = {
+    window.misery_dates = {
         start: start_date,
         end: end_date,
         last_misery: last_misery,
@@ -111,8 +111,8 @@ $.getJSON( fn['scores'], function( data ) {
             // Get the days since
             if ( this.last_misery !== '' )
             {
+                if ( typeof this.last_misery === 'undefined' ) window.setTimeout(misery_dates.last_misery = last_misery, 1000);
                 var days_since = Math.round(( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
-                if ( days_since == NaN ) days_since = Math.round(( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
                 this.days_since_last_misery = days_since;
                 
                 if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
@@ -120,6 +120,7 @@ $.getJSON( fn['scores'], function( data ) {
         }
     };
     misery_dates.init();
+    console.log(misery_dates);
 
 var $chart = $('#chart');
 //var mobile_threshold = 500;
