@@ -111,7 +111,10 @@ $.getJSON( fn['scores'], function( data ) {
             // Get the days since
             if ( this.last_misery !== '' )
             {
-                this.days_since_last_misery = Math.round(( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
+                var days_since = Math.round(( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
+                if ( days_since == NaN ) days_since = Math.round(( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
+                this.days_since_last_misery = days_since;
+                
                 if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
             }
         }
