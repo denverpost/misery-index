@@ -111,7 +111,15 @@ $.getJSON( fn['scores'], function( data ) {
             // Get the days since
             if ( this.last_misery !== '' )
             {
-                if ( typeof this.last_misery === 'undefined' ) window.setTimeout(misery_dates.last_misery = last_misery, 1000);
+                if ( typeof this.last_misery === 'undefined' )
+                {
+                    this.interval = window.setInterval(function() { 
+                        if ( typeof this.last_misery !== 'undefined' )
+                        {
+                            misery_dates.last_misery = last_misery;
+                            window.clearInterval(misery_dates.interval)
+                        }}, 1000);
+                }
                 var days_since = Math.round(( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
                 this.days_since_last_misery = days_since;
                 
@@ -120,7 +128,6 @@ $.getJSON( fn['scores'], function( data ) {
         }
     };
     misery_dates.init();
-    console.log(misery_dates);
 
 var $chart = $('#chart');
 //var mobile_threshold = 500;
