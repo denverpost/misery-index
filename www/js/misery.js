@@ -1,7 +1,35 @@
 // MISERY JAVASCRIPT
 // So we don't cut and paste the same js all over the place.
 
+// RECENT MISERABLE EVENTS
+// This is the list of bad things that have happened.
+var last_misery;
+$.getJSON( fn['recent'], function( data ) {
+    var items = [];
+    $.each( data, function( key, val ) 
+    {
+        var timestamp = val['Timestamp'];
+        if ( val['Date'] !== '' )
+        {
+            timestamp = val['Date'];
+            last_misery = val['Date'];
+        }
 
+        var text = val['Bad Thing'] + ": " + timestamp;
+        if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "' target='_parent'>" + text + "</a>";
+
+        items.push( "<li id='" + key + "'>" + text + "</li>" );
+    });
+
+    items.reverse();
+    $( "<ul/>", {
+        html: items.join( "" )
+    }).appendTo( "#recently" );
+});
+
+
+
+// CHART AND DINGER
 $.getJSON( fn['scores'], function( data ) {
     var items = [];
     $.each( data, function( key, val ) 
@@ -60,6 +88,8 @@ $.getJSON( fn['scores'], function( data ) {
 var misery_dates = {
     start: start_date,
     end: end_date,
+    last_misery: last_misery,
+    days_since_last_misery: null,
     current: new Date(),
     delta: 0,
     get_delta: function()
@@ -167,23 +197,3 @@ chart.selectAll("bar")
         });
 
 
-// RECENT MISERY
-// This is the list of bad things that have happened.
-$.getJSON( fn['recent'], function( data ) {
-    var items = [];
-    $.each( data, function( key, val ) 
-    {
-        var timestamp = val['Timestamp'];
-        if ( val['Date'] !== '' ) timestamp = val['Date'];
-
-        var text = val['Bad Thing'] + ": " + timestamp;
-        if ( val['URL'] !== '' ) text = "<a href='" + val['URL'] + "' target='_parent'>" + text + "</a>";
-
-        items.push( "<li id='" + key + "'>" + text + "</li>" );
-    });
-
-    items.reverse();
-    $( "<ul/>", {
-        html: items.join( "" )
-    }).appendTo( "#recently" );
-});
