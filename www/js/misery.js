@@ -98,6 +98,12 @@ $.getJSON( fn['scores'], function( data ) {
             this.delta = Math.round(delta / 1000 / 60 / 60 / 24) + 1;
             return Math.round(delta / 1000 / 60 / 60 / 24) + 1;
         },
+        set_days_since: function()
+        {
+            var date_last = new Date(this.last_misery);
+            this.days_since_last_misery = Math.round(( this.current - date_last ) / 1000 / 60 / 60 / 24);
+            if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
+        },
         init: function()
         {
             this.current.setHours(0);
@@ -114,16 +120,14 @@ $.getJSON( fn['scores'], function( data ) {
                 if ( typeof this.last_misery === 'undefined' )
                 {
                     this.interval = window.setInterval(function() { 
-                        if ( typeof this.last_misery !== 'undefined' )
-                        {
-                            misery_dates.last_misery = last_misery;
+                        misery_dates.last_misery = last_misery;
+                        if ( misery_dates.last_misery.indexOf('/') > 0 )
+                        { 
                             window.clearInterval(misery_dates.interval)
+                            misery_dates.set_days_since()
                         }}, 1000);
                 }
-                var days_since = Math.round(( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
-                this.days_since_last_misery = days_since;
-                
-                if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
+                misery_dates.set_days_since()
             }
         }
     };
