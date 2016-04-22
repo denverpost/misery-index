@@ -113,6 +113,7 @@ var chart = d3.select(".chart")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var data = window.data;
+var count_min = 0;
 
 data.forEach(function(d) 
 {
@@ -127,11 +128,15 @@ data.forEach(function(d)
     d.date = d.date.replace(season_year, '\'');
 
     d.count = +d.count;
+    if ( +d.count > count_min ) count_min = +d.count;
+
     previous_date = d.date;
 });
 
 x.domain(data.map(function(d) { return d.date; }));
-y.domain([0, d3.max(data, function(d) { return d.count; })]);
+y.domain([0, d3.max(data, function(d) { 
+    if ( count_min < 10 ) return 10;
+    return d.count; })]);
 
 
 chart.append("g")
