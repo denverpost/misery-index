@@ -84,39 +84,39 @@ $.getJSON( fn['scores'], function( data ) {
     };
     tear.init();
 
-// CHART THE MISERY
-var misery_dates = {
-    start: start_date,
-    end: end_date,
-    last_misery: last_misery,
-    days_since_last_misery: null,
-    current: new Date(),
-    delta: 0,
-    get_delta: function()
-    {
-        var delta = this.current - this.start;
-        this.delta = Math.round(delta / 1000 / 60 / 60 / 24) + 1;
-        return Math.round(delta / 1000 / 60 / 60 / 24) + 1;
-    },
-    init: function()
-    {
-        this.current.setHours(0);
-        this.current.setMinutes(0);
-        this.current.setSeconds(0);
-        this.current.setMilliseconds(0);
-
-        if ( this.current > this.end ) this.current = this.end;
-        this.get_delta();
-
-        // Get the days since
-        if ( this.last_misery !== '' )
+    // CHART THE MISERY
+    var misery_dates = {
+        start: start_date,
+        end: end_date,
+        last_misery: last_misery,
+        days_since_last_misery: null,
+        current: new Date(),
+        delta: 0,
+        get_delta: function()
         {
-            this.days_since_last_misery = Math.round( ( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
-            if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
+            var delta = this.current - this.start;
+            this.delta = Math.round(delta / 1000 / 60 / 60 / 24) + 1;
+            return Math.round(delta / 1000 / 60 / 60 / 24) + 1;
+        },
+        init: function()
+        {
+            this.current.setHours(0);
+            this.current.setMinutes(0);
+            this.current.setSeconds(0);
+            this.current.setMilliseconds(0);
+
+            if ( this.current > this.end ) this.current = this.end;
+            this.get_delta();
+
+            // Get the days since
+            if ( this.last_misery !== '' )
+            {
+                this.days_since_last_misery = Math.round(( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
+                if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
+            }
         }
-    }
-};
-misery_dates.init();
+    };
+    misery_dates.init();
 
 var $chart = $('#chart');
 //var mobile_threshold = 500;
