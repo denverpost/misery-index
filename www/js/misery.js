@@ -94,25 +94,24 @@ var misery_dates = {
     delta: 0,
     get_delta: function()
     {
-        this.current.setHours(0);
-        this.current.setMinutes(0);
-        this.current.setSeconds(0);
-        this.current.setMilliseconds(0);
-
         var delta = this.current - this.start;
-
         this.delta = Math.round(delta / 1000 / 60 / 60 / 24) + 1;
         return Math.round(delta / 1000 / 60 / 60 / 24) + 1;
     },
     init: function()
     {
+        this.current.setHours(0);
+        this.current.setMinutes(0);
+        this.current.setSeconds(0);
+        this.current.setMilliseconds(0);
+
         if ( this.current > this.end ) this.current = this.end;
         this.get_delta();
 
         // Get the days since
-        if ( this.last_misery != '' )
+        if ( this.last_misery !== '' )
         {
-            this.days_since_last_misery = Math.round( ( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24) + 1;
+            this.days_since_last_misery = Math.round( ( this.current - new Date(this.last_misery) ) / 1000 / 60 / 60 / 24);
             if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
         }
     }
