@@ -43,6 +43,7 @@ $.getJSON( fn['scores'], function( data ) {
     // Dinger's tears.
     var tear = {
         dinger_top: $('#dinger').position()['top'],
+        dinger_left: $('#dinger').position()['left'],
         src: 'http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_044312_dinger-tear70.gif',
         rand: function(floor, ceiling)
         {
@@ -52,20 +53,21 @@ $.getJSON( fn['scores'], function( data ) {
         add: function(i)
         {
             // Add a tear to Dinger's face.
-            var x = this.rand(50,200);
-            var y = this.rand(160+this.dinger_top,260+this.dinger_top);
+            var x = this.rand(60 + this.dinger_left,200 + this.dinger_left);
+            var y = this.rand(160+this.dinger_top,240+this.dinger_top);
 
             // Figure out how much to rotate the tear.
             // 115px's the center point. 
             var negative = '';
-            var dist = 115 - x;
+            var center = 115 + this.dinger_left;
+            var dist = center - x;
             if  ( dist < 0 ) 
             {
                 negative = '-';
                 dist = dist * -1;
             }
             var rotate = Math.floor(Math.sqrt(dist));
-            $('#dinger').prepend('<img src="' + this.src + '" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
+            $('#dinger').prepend('<img src="' + this.src + '" class="tear" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
         },
         init: function()
         {
@@ -103,6 +105,7 @@ $.getJSON( fn['scores'], function( data ) {
             var date_last = new Date(this.last_misery);
             this.days_since_last_misery = Math.round(( this.current - date_last ) / 1000 / 60 / 60 / 24);
             if ( $('#days-since').length > 0 ) $('#days-since').text(this.days_since_last_misery);
+            if ( $('#days-since').text() === '1' ) $('#s-since').text('');
         },
         init: function()
         {

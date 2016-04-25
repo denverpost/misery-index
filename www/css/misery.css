@@ -1,9 +1,4 @@
-/*
-#dinger
-{
-    position: absolute;
-}
-*/
+#dinger { }
 .row { margin-left: 0!important; }
 
 .chart 
@@ -104,6 +99,7 @@ From http://www.bypeople.com/responsive-css-only-ribbon/
     position: relative;
     width: 60%;
     margin: 0;
+    right: -55px;
 }
 
 .ribbon:before,
