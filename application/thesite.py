@@ -73,7 +73,7 @@ def season_detail(year):
 
 @app.route('/season/<year>/<month_long>/')
 def month_detail(year, month_long):
-    app.page['title'] = 'Misery Report, %s %s' % (month_long.title(), year)
+    app.page['title'] = 'Rockies Misery Report, %s %s' % (month_long.title(), year)
     app.page['description'] = 'The Colorado Rockies Misery Index Report for %s %s' % (month_long.title(), year)
     app.page['url'] = build_url(app, request)
 
@@ -89,6 +89,8 @@ def month_detail(year, month_long):
     response = {
         'app': app,
         'year': year,
+        'month': month_long,
+        'count': len(events),
         'events': events
     }
     return render_template('month_detail.html', response=response)
