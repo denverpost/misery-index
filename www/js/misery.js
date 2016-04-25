@@ -3,7 +3,7 @@
 
 // RECENT MISERABLE EVENTS
 // This is the list of bad things that have happened.
-var last_misery;
+var last_misery, tear;
 $.getJSON( fn['recent'], function( data ) {
     var items = [];
     $.each( data, function( key, val ) 
@@ -41,7 +41,7 @@ $.getJSON( fn['scores'], function( data ) {
 
     // VISUALIZE THE MISERY
     // Dinger's tears.
-    var tear = {
+    window.tear = {
         dinger_top: $('#dinger').position()['top'],
         dinger_left: $('#dinger').position()['left'],
         src: 'http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_044312_dinger-tear70.gif',
@@ -219,3 +219,4 @@ chart.selectAll("bar")
     .attr("height", function(d) { return height - y(d.count); });
 
         });
+
