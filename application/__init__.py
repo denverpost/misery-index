@@ -25,7 +25,7 @@ pages = FlatPages(app)
 with app.app_context():
     app.url_root = '/'
     app.page = page
-    app.sitename = ''
+    app.sitename = 'Rockies Misery Report'
     app.seasons = ['2016', '2015']
     app.season = app.seasons[0]
 
