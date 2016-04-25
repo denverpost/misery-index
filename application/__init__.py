@@ -26,6 +26,8 @@ with app.app_context():
     app.url_root = '/'
     app.page = page
     app.sitename = ''
+    app.seasons = ['2016', '2015']
+    app.season = app.seasons[0]
 
 import application.flatpage
 import application.thesite

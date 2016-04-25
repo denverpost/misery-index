@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block style %}{% endblock style %}
+{% block breadcrumbs %}{{ super() }}
+&rsaquo; <a href="">Seasons</a>
+&rsaquo; <a href=""></a>
+{% endblock breadcrumbs %}
+{% block content %}
+<h2></h2>
+<p></p>
+
+<ul>
+{% for item in response.events -%}
+    <li><a href="{{item['URL']}}/">{{item['Bad Thing']}}, {{item['Date']}}</a>: {{item['Value']}}</li>
+{% endfor %}
+</ul>
+{% endblock content %}
