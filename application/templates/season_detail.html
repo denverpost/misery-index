@@ -3,6 +3,13 @@
 {% block breadcrumbs %}{{ super() }}
 &rsaquo; <a href="../">Seasons</a>{% endblock breadcrumbs %}
 {% block content %}
+
+<p>
+    The Rockies have had {{response.count|spell_out}} miserable events in {{response.year}}
+    {%- if response.app.season == response.year %} so far{% endif %}.
+    See the month-by-month misery on our Misery Reports below.
+<p>
+
 <ul>
 {% for item in response.months -%}
     <li><a href="{{item}}/">{{item}}</a></li>

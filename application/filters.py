@@ -28,6 +28,16 @@ def ordinal_filter(value):
     return '%d%s' % (value, o)
 app.add_template_filter(ordinal_filter)
 
+@app.template_filter(name='spell_out')
+def spell_out_filter(value):
+    """ Take a number less than 10 and return it, spelled out.
+        """
+    numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    if value < 10:
+        return numbers[value]
+    return value
+app.add_template_filter(spell_out_filter)
+
 @app.template_filter(name='pluralize')
 def pluralize(value):
     """ Add an 's' or an 'ies' to a word.

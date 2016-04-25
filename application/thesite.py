@@ -24,7 +24,7 @@ def build_url(app, request):
 
 @app.route('/')
 def index():
-    app.page['title'] = ''
+    app.page['title'] = 'Rockies Misery Index Archive'
     app.page['description'] = ''
     app.page['url'] = build_url(app, request)
 
@@ -39,7 +39,7 @@ def index():
 
 @app.route('/season/')
 def season_index():
-    app.page['title'] = ''
+    app.page['title'] = 'Rockies Misery Index Index'
     app.page['description'] = ''
     app.page['url'] = build_url(app, request)
 
@@ -50,7 +50,7 @@ def season_index():
 
 @app.route('/season/<year>/')
 def season_detail(year):
-    app.page['title'] = ''
+    app.page['title'] = 'Rockies Misery Index %s' % year
     app.page['description'] = ''
     app.page['url'] = build_url(app, request)
 
@@ -65,14 +65,16 @@ def season_detail(year):
 
     response = {
         'app': app,
+        'count': len(items),
+        'year': year,
         'months': months
     }
     return render_template('season_detail.html', response=response)
 
 @app.route('/season/<year>/<month>/')
 def month_detail(year, month):
-    app.page['title'] = ''
-    app.page['description'] = ''
+    app.page['title'] = 'Misery Report, '
+    app.page['description'] = 'The Colorado Rockies Misery Index Report for %s %s' % (month, year)
     app.page['url'] = build_url(app, request)
 
     items = json.load(open('output/%s.json' % year))
@@ -86,6 +88,7 @@ def month_detail(year, month):
 
     response = {
         'app': app,
+        'year': year,
         'events': events
     }
     return render_template('month_detail.html', response=response)
