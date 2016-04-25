@@ -28,15 +28,24 @@ def ordinal_filter(value):
     return '%d%s' % (value, o)
 app.add_template_filter(ordinal_filter)
 
-@app.template_filter(name='spell_out')
-def spell_out_filter(value):
+@app.template_filter(name='number_l')
+def number_l_filter(value):
     """ Take a number less than 10 and return it, spelled out.
         """
     numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     if value < 10:
         return numbers[value]
     return value
-app.add_template_filter(spell_out_filter)
+app.add_template_filter(number_l_filter)
+
+@app.template_filter(name='month_l')
+def month_l_filter(value):
+    """ Take an integer and return the corresponding month.
+        1 is January. 0 is nothing.
+        """
+    lookup = ['', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+    return lookup[value]
+app.add_template_filter(month_l_filter)
 
 @app.template_filter(name='pluralize')
 def pluralize(value):

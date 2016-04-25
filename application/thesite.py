@@ -60,8 +60,8 @@ def season_detail(year):
     months = []
     for item in items:
         dt = datetime.strptime(item['Date'], '%m/%d/%Y')
-        if dt.month not in months:
-            months.append(dt.month)
+        if filters.month_l_filter(dt.month) not in months:
+            months.append(filters.month_l_filter(dt.month))
 
     response = {
         'app': app,
@@ -71,10 +71,10 @@ def season_detail(year):
     }
     return render_template('season_detail.html', response=response)
 
-@app.route('/season/<year>/<month>/')
-def month_detail(year, month):
-    app.page['title'] = 'Misery Report, '
-    app.page['description'] = 'The Colorado Rockies Misery Index Report for %s %s' % (month, year)
+@app.route('/season/<year>/<month_long>/')
+def month_detail(year, month_long):
+    app.page['title'] = 'Misery Report, %s %s' % (month_long.title(), year)
+    app.page['description'] = 'The Colorado Rockies Misery Index Report for %s %s' % (month_long.title(), year)
     app.page['url'] = build_url(app, request)
 
     items = json.load(open('output/%s.json' % year))
@@ -83,7 +83,7 @@ def month_detail(year, month):
     events = []
     for item in items:
         dt = datetime.strptime(item['Date'], '%m/%d/%Y')
-        if dt.month != month:
+        if filters.month_l_filter(dt.month) == month_long:
             events.append(item)
 
     response = {
