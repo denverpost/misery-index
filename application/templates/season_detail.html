@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block style %}{% endblock style %}
+{% block head %}
+<script src="{{response.app.url_root}}static/js/misery.js"></script>
+<script src="{{response.app.url_root}}static/js/d3.v3.min.js"></script>{% endblock head %}
 {% block breadcrumbs %}{{ super() }}
 &rsaquo; <a href="../">Seasons</a>{% endblock breadcrumbs %}
 {% block content %}

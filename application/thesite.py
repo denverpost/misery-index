@@ -37,7 +37,7 @@ def index():
 # === NOT DEPLOYED YET === #
 # =========================================================
 
-@app.route('/season/')
+@app.route('/rockies/season/')
 def season_index():
     app.page['title'] = 'Rockies Misery Index Index'
     app.page['description'] = ''
@@ -48,7 +48,7 @@ def season_index():
     }
     return render_template('season_index.html', response=response)
 
-@app.route('/season/<year>/')
+@app.route('/rockies/season/<year>/')
 def season_detail(year):
     app.page['title'] = 'Rockies Misery Index %s' % year
     app.page['description'] = ''
@@ -71,7 +71,19 @@ def season_detail(year):
     }
     return render_template('season_detail.html', response=response)
 
-@app.route('/season/<year>/<month_long>/')
+def month_overview(items, month_long):
+    """ This returns all the data we use in a month report.
+        It also allows us to compare one month's events to another.
+        It returns a dict.
+        """
+    events = []
+    for item in items:
+        dt = datetime.strptime(item['Date'], '%m/%d/%Y')
+        if filters.month_l_filter(dt.month) == month_long:
+            events.append(item)
+    return dict(events=events)
+
+@app.route('/rockies/season/<year>/<month_long>/')
 def month_detail(year, month_long):
     app.page['title'] = 'Rockies Misery Report, %s %s' % (month_long.title(), year)
     app.page['description'] = 'The Colorado Rockies Misery Index Report for %s %s' % (month_long.title(), year)
@@ -79,19 +91,14 @@ def month_detail(year, month_long):
 
     items = json.load(open('output/%s.json' % year))
 
-    # We want the distinct events 
-    events = []
-    for item in items:
-        dt = datetime.strptime(item['Date'], '%m/%d/%Y')
-        if filters.month_l_filter(dt.month) == month_long:
-            events.append(item)
+    month = month_overview(items, month_long)
 
     response = {
         'app': app,
         'year': year,
-        'month': month_long,
-        'count': len(events),
-        'events': events
+        'month_long': month_long,
+        'count': len(month['events']),
+        'month': month
     }
     return render_template('month_detail.html', response=response)
 

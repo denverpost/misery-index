@@ -73,9 +73,9 @@ def date_raw_filter(value):
     if not value:
         return None
     try:
-        value = datetime.strptime(value, '%Y-%m-%d')
+        value = datetime.strptime(value, '%m/%d/%Y')
     except:
-        value = value.strftime('%Y-%m-%d')
+        value = value.strftime('%m/%d/%Y')
     return value
 app.add_template_filter(datetime_raw_filter)
 
