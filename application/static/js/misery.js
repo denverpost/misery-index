@@ -44,50 +44,53 @@ $.getJSON( fn['scores'], function( data ) {
 
     // VISUALIZE THE MISERY
     // Dinger's tears.
-    window.tear = {
-        dinger_top: $('#dinger').position()['top'],
-        dinger_left: $('#dinger').position()['left'],
-        src: 'http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_044312_dinger-tear70.gif',
-        rand: function(floor, ceiling)
-        {
-            // Return a random number between floor and ceiling.
-            return Math.floor(Math.random() * (ceiling - floor)) + floor;
-        },
-        add: function(i)
-        {
-            // Add a tear to Dinger's face.
-            var x = this.rand(60 + this.dinger_left,200 + this.dinger_left);
-            var y = this.rand(160+this.dinger_top,240+this.dinger_top);
+    if ( $('#dinger').length > 0 )
+    {
+        window.tear = {
+            dinger_top: $('#dinger').position()['top'],
+            dinger_left: $('#dinger').position()['left'],
+            src: 'http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_044312_dinger-tear70.gif',
+            rand: function(floor, ceiling)
+            {
+                // Return a random number between floor and ceiling.
+                return Math.floor(Math.random() * (ceiling - floor)) + floor;
+            },
+            add: function(i)
+            {
+                // Add a tear to Dinger's face.
+                var x = this.rand(60 + this.dinger_left,200 + this.dinger_left);
+                var y = this.rand(160+this.dinger_top,240+this.dinger_top);
 
-            // Figure out how much to rotate the tear.
-            // 115px's the center point. 
-            var negative = '';
-            var center = 115 + this.dinger_left;
-            var dist = center - x;
-            if  ( dist < 0 ) 
+                // Figure out how much to rotate the tear.
+                // 115px's the center point. 
+                var negative = '';
+                var center = 115 + this.dinger_left;
+                var dist = center - x;
+                if  ( dist < 0 ) 
+                {
+                    negative = '-';
+                    dist = dist * -1;
+                }
+                var rotate = Math.floor(Math.sqrt(dist));
+                $('#dinger').prepend('<img src="' + this.src + '" class="tear" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
+            },
+            init: function()
             {
-                negative = '-';
-                dist = dist * -1;
+                // The number of tears is determined by the misery count of the
+                // last day we have a score for.
+                var keys = Object.keys(data);
+                var key = keys.pop();
+                var count = data[key];
+                for ( i = 0; i < count; i ++ )
+                {
+                    this.add(i);
+                }
+                $('#tears').text(count);
+                if ( count == 1 ) $('#s').text('');
             }
-            var rotate = Math.floor(Math.sqrt(dist));
-            $('#dinger').prepend('<img src="' + this.src + '" class="tear" id="tear' + i + '" style="transform:rotate(' + negative + rotate + 'deg); position:absolute;top:' + y + 'px;left:' + x + 'px;">');
-        },
-        init: function()
-        {
-            // The number of tears is determined by the misery count of the
-            // last day we have a score for.
-            var keys = Object.keys(data);
-            var key = keys.pop();
-            var count = data[key];
-            for ( i = 0; i < count; i ++ )
-            {
-                this.add(i);
-            }
-            $('#tears').text(count);
-            if ( count == 1 ) $('#s').text('');
-        }
-    };
-    tear.init();
+        };
+        tear.init();
+    }
 
     // CHART THE MISERY
     window.misery_dates = {
