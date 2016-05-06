@@ -3,6 +3,8 @@
 {% block head %}
 <script src="{{response.app.url_root}}static/js/d3.v3.min.js"></script>{% endblock head %}
 {% block breadcrumbs %}{{ super() }}
+&rsaquo; <a href="{{response.app.url_root}}">Misery Index</a>
+&rsaquo; <a href="../../../">{{response.app.sport}}</a>
 &rsaquo; <a href="../../">Seasons</a>
 &rsaquo; <a href="../">{{response.year}}</a>{% endblock breadcrumbs %}
 {% block content %}

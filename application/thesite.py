@@ -39,7 +39,9 @@ def index():
 def sport_lookup(sport):
     """ Take the URL parameter and make it a publishable string.
         """
-    return sport.title()
+    sport = sport.title()
+    app.sport = sport
+    return sport
 
 @app.route('/<sport>/')
 def sport_index(sport):
