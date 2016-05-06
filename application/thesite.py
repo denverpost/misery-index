@@ -24,7 +24,7 @@ def build_url(app, request):
 
 @app.route('/')
 def index():
-    app.page['title'] = 'Rockies Misery Index Archive'
+    app.page['title'] = 'Misery Index Archive'
     app.page['description'] = ''
     app.page['url'] = build_url(app, request)
 
@@ -36,10 +36,25 @@ def index():
 # =========================================================
 # === NOT DEPLOYED YET === #
 # =========================================================
+def sport_lookup(sport):
+    """ Take the URL parameter and make it a publishable string.
+        """
+    return sport.title()
 
-@app.route('/rockies/season/')
-def season_index():
-    app.page['title'] = 'Rockies Misery Index Index'
+@app.route('/<sport>/')
+def sport_index(sport):
+    app.page['title'] = '%s Misery Index Archive' % sport_lookup(sport)
+    app.page['description'] = ''
+    app.page['url'] = build_url(app, request)
+
+    response = {
+        'app': app
+    }
+    return render_template('sport_index.html', response=response)
+
+@app.route('/<sport>/season/')
+def season_index(sport):
+    app.page['title'] = '%s Misery Index Index' % sport_lookup(sport)
     app.page['description'] = ''
     app.page['url'] = build_url(app, request)
 
@@ -48,9 +63,9 @@ def season_index():
     }
     return render_template('season_index.html', response=response)
 
-@app.route('/rockies/season/<year>/')
-def season_detail(year):
-    app.page['title'] = 'Rockies Misery Index %s' % year
+@app.route('/<sport>/season/<year>/')
+def season_detail(sport, year):
+    app.page['title'] = '%s Misery Index %s'  % (sport_lookup(sport), year)
     app.page['description'] = ''
     app.page['url'] = build_url(app, request)
 
@@ -83,10 +98,10 @@ def month_overview(items, month_long):
             events.append(item)
     return dict(events=events)
 
-@app.route('/rockies/season/<year>/<month_long>/')
-def month_detail(year, month_long):
-    app.page['title'] = 'Rockies Misery Report, %s %s' % (month_long.title(), year)
-    app.page['description'] = 'The Colorado Rockies Misery Index Report for %s %s' % (month_long.title(), year)
+@app.route('/<sport>/season/<year>/<month_long>/')
+def month_detail(sport, year, month_long):
+    app.page['title'] = '%s Misery Report, %s %s' % (sport_lookup(sport), month_long.title(), year)
+    app.page['description'] = 'The %s Misery Index Report for %s %s' % (sport_lookup(sport), month_long.title(), year)
     app.page['url'] = build_url(app, request)
 
     items = json.load(open('output/%s.json' % year))

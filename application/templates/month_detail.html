@@ -1,13 +1,22 @@
 {% extends "base.html" %}
 {% block style %}{% endblock style %}
 {% block head %}
-<script src="{{response.app.url_root}}static/js/misery.js"></script>
 <script src="{{response.app.url_root}}static/js/d3.v3.min.js"></script>{% endblock head %}
 {% block breadcrumbs %}{{ super() }}
 &rsaquo; <a href="../../">Seasons</a>
 &rsaquo; <a href="../">{{response.year}}</a>{% endblock breadcrumbs %}
 {% block content %}
 
+<script>
+        var data = [];
+        var fn = {
+            scores: '{{response.app.url_root}}output/scores.json',
+        }
+        var season_year = 2016;
+        var start_date = new Date(season_year, 3, 4);
+        var end_date = new Date(season_year, 9, 1);
+</script>
+<script src="{{response.app.url_root}}static/js/misery.js"></script>
 <ol>
 {% for item in response.month.events -%}
     <li><a href="{{item['URL']}}/">{{item['Bad Thing']}}</a> <span>{{item['Date']|date_raw|datetime}}</span></li>

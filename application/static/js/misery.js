@@ -142,6 +142,8 @@ $.getJSON( fn['scores'], function( data ) {
     };
     misery_dates.init();
 
+function build_chart()
+{
 var $chart = $('#chart');
 //var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
@@ -223,6 +225,5 @@ chart.selectAll("bar")
     .attr("width", 5)
     .attr("y", function(d) { return y(d.count); })
     .attr("height", function(d) { return height - y(d.count); });
-
+}
         });
-
