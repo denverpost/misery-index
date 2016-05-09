@@ -171,7 +171,7 @@ var y_axis = d3.svg.axis()
     .orient("left")
     .ticks(10);
 
-var chart = d3.select(".chart")
+var chart = d3.select("#chart")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
