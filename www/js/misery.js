@@ -129,11 +129,14 @@ $.getJSON( fn['scores'], function( data ) {
                 if ( typeof this.last_misery === 'undefined' )
                 {
                     this.interval = window.setInterval(function() { 
-                        misery_dates.last_misery = last_misery;
-                        if ( misery_dates.last_misery.indexOf('/') > 0 )
-                        { 
-                            window.clearInterval(misery_dates.interval)
-                            misery_dates.set_days_since()
+                        if ( typeof last_misery !== 'undefined' )
+                        {
+                            misery_dates.last_misery = last_misery;
+                            if ( misery_dates.last_misery.indexOf('/') > 0 )
+                            { 
+                                window.clearInterval(misery_dates.interval)
+                                misery_dates.set_days_since()
+                            }
                         }}, 1000);
                 }
                 misery_dates.set_days_since()
@@ -142,6 +145,8 @@ $.getJSON( fn['scores'], function( data ) {
     };
     misery_dates.init();
 
+function build_chart()
+{
 var $chart = $('#chart');
 //var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
@@ -223,6 +228,6 @@ chart.selectAll("bar")
     .attr("width", 5)
     .attr("y", function(d) { return y(d.count); })
     .attr("height", function(d) { return height - y(d.count); });
-
+}
+build_chart();
         });
-
