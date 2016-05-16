@@ -180,22 +180,42 @@ var chart = d3.select("#chart")
 var data = window.data;
 var count_min = 0;
 
+var i = 0;
 data.forEach(function(d) 
 {
+    // Formatting times per https://github.com/d3/d3/wiki/Time-Formatting
     var format = d3.time.format("%m/%d/%Y");
     var format_axis = d3.time.format("%b %-d");
     var format_ordinal = d3.time.format("%-j");
+    var format_month = d3.time.format("%B");
     d.date = format.parse(d.date);
-    var date_orig = d.date;
-    var ordinal = format_ordinal(d.date);
-    d.date = format_axis(d.date);
 
+    // If we're only publishing a certain month, remove the item if it's
+    // not from that month.
+    // season_month is usually set as a window var on the calling page.
+    if ( typeof season_month !== 'undefined' )
+    {
+        var m = +format_month(d.date).toLower();
+        if ( season_month !== m )
+        {
+            console.log(d, i, m)
+            data =data.splice(i, 1);
+            console.log(Object.keys(data).length);
+            i += 1;
+            return false;
+        }
+    }
+
+    //var date_orig = d.date;
+    //var ordinal = format_ordinal(d.date);
+    d.date = format_axis(d.date);
     d.date = d.date.replace(season_year, '\'');
 
     d.count = +d.count;
     if ( +d.count > count_min ) count_min = +d.count;
 
     previous_date = d.date;
+    i += 1;
 });
 
 x.domain(data.map(function(d) { return d.date; }));

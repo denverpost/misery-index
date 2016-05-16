@@ -245,7 +245,10 @@
     <div id="dfmFooter" style="border-top:1px solid #ddd;"><!--CORPORATE FOOTER--></div>
     <script src="http://local.denverpost.com/common/dfm/dfm-nav/dfm-nav-core.js"></script>
     <script>
-        window.setTimeout(function(){dfmNav.initParams("mode|article", "site|denverpost", "pageTitle|Sports", "leaderboard|true", "thirdParty|false")},5);
+        if ( typeof dfmNav !== 'undefined' )
+        {
+            window.setTimeout(function(){dfmNav.initParams("mode|article", "site|denverpost", "pageTitle|Sports", "leaderboard|true", "thirdParty|false")},5);
+        }
     </script>
 
     <footer>

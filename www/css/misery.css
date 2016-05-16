@@ -8,7 +8,7 @@
     width: 100%;
     max-width: 960px;
 }
-.chart rect {
+.rockies rect, .chart rect {
   fill: #42298E;
 }
 

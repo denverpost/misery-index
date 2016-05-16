@@ -14,11 +14,12 @@
         var fn = {
             scores: '{{response.app.url_root}}static/output/scores.json',
         }
-        var season_year = 2016;
+        var season_year = {{response.year}};
+        var season_month = '{{response.month.long}}';
         var start_date = new Date(season_year, 3, 4);
         var end_date = new Date(season_year, 9, 1);
 </script>
-<svg class="chart-month" id="chart"></svg>
+<svg class="chart-month rockies" id="chart"></svg>
 <script src="{{response.app.url_root}}static/js/misery.js"></script>
 <ol>
 {% for item in response.month.events -%}

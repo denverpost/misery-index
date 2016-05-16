@@ -98,7 +98,7 @@ def month_overview(items, month_long):
         dt = datetime.strptime(item['Date'], '%m/%d/%Y')
         if filters.month_l_filter(dt.month) == month_long:
             events.append(item)
-    return dict(events=events)
+    return events
 
 @app.route('/<sport>/season/<year>/<month_long>/')
 def month_detail(sport, year, month_long):
@@ -108,14 +108,16 @@ def month_detail(sport, year, month_long):
 
     items = json.load(open('output/%s.json' % year))
 
-    month = month_overview(items, month_long)
+    events = month_overview(items, month_long)
 
     response = {
         'app': app,
         'year': year,
-        'month_long': month_long,
-        'count': len(month['events']),
-        'month': month
+        'count': len(events),
+        'month': {
+            'long': month_long,
+            'events': events,
+        }
     }
     return render_template('month_detail.html', response=response)
 
