@@ -48,7 +48,7 @@ $.getJSON( fn['scores'], function( data ) {
             var format_month = d3.time.format("%B");
             var d = format.parse(key);
             var m = format_month(d).toLowerCase();
-            if ( season_month !== m ) return false;
+            if ( season_month !== m ) return true;
         }
         window.data.push(obj);
     });
