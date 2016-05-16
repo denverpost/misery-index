@@ -33,12 +33,13 @@
   display: none;
 }
 
-/* Hide all but the every-seventh tick and label on the x axis */
+/* On daily: Hide all but the every-seventh tick and label on the x axis */
 g.x > g:nth-child(1n+0) { display:none; }
-g.x > g:nth-child(7n+1)
-{
-    display: block;
-}
+g.x > g:nth-child(7n+1) { display: block; }
+
+/* On monthly: Hide all but the every-third tick and label on the x axis */
+.chart-month g.x > g:nth-child(1n+0) { display:none; }
+.chart-month g.x > g:nth-child(3n+1) { display: block; }
 
 /* PAGE STYLES */
 body { margin:0; }

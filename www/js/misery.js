@@ -162,6 +162,8 @@ function build_chart()
 var $chart = $('#chart');
 //var mobile_threshold = 500;
 var aspect = { width: 12, height: 6 };
+if ( typeof window.bar_width === 'undefined' ) window.bar_width = 5;
+console.log(misery_dates);
 var chart_width = misery_dates.delta * 5;
 
 var margin = { top: 20, right: 20, bottom: 30, left: 30 },
@@ -230,7 +232,7 @@ chart.append("g")
     .call(y_axis)
     .append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 6)
+    .attr("y", window.bar_width + 1)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
     .text("Misery");
@@ -241,7 +243,7 @@ chart.selectAll("bar")
     .attr("class", "bar")
     .attr("x", function(d) { return x(d.date); })
     //.attr("width", x.rangeBand())
-    .attr("width", 5)
+    .attr("width", window.bar_width)
     .attr("y", function(d) { return y(d.count); })
     .attr("height", function(d) { return height - y(d.count); });
 }

@@ -18,9 +18,12 @@
         var season_month = '{{response.month.long}}';
         var start_date = new Date(season_year, 3, 4);
         var end_date = new Date(season_year, 9, 1);
+        var bar_width = 15;
 </script>
 <svg class="chart-month rockies" id="chart"></svg>
 <script src="{{response.app.url_root}}static/js/misery.js"></script>
+
+<h2 id="events">{{response.month.long|title}}'s miserable events</h2>
 <ol>
 {% for item in response.month.events -%}
     <li><a href="{{item['URL']}}/">{{item['Bad Thing']}}</a> <span>{{item['Date']|date_raw|datetime}}</span></li>
