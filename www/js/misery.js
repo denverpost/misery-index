@@ -38,6 +38,18 @@ $.getJSON( fn['scores'], function( data ) {
     $.each( data, function( key, val ) 
     {
         var obj = {"count": val, "date": key};
+
+        // If we're only publishing a certain month, remove the item if it's
+        // not from that month.
+        // season_month is usually set as a window var on the calling page.
+        if ( typeof season_month !== 'undefined' )
+        {
+            var format = d3.time.format("%m/%d/%Y");
+            var format_month = d3.time.format("%B");
+            var d = format.parse(key);
+            var m = format_month(d).toLowerCase();
+            if ( season_month !== m ) return false;
+        }
         window.data.push(obj);
     });
 
@@ -187,24 +199,8 @@ data.forEach(function(d)
     var format = d3.time.format("%m/%d/%Y");
     var format_axis = d3.time.format("%b %-d");
     var format_ordinal = d3.time.format("%-j");
-    var format_month = d3.time.format("%B");
     d.date = format.parse(d.date);
 
-    // If we're only publishing a certain month, remove the item if it's
-    // not from that month.
-    // season_month is usually set as a window var on the calling page.
-    if ( typeof season_month !== 'undefined' )
-    {
-        var m = +format_month(d.date).toLower();
-        if ( season_month !== m )
-        {
-            console.log(d, i, m)
-            data =data.splice(i, 1);
-            console.log(Object.keys(data).length);
-            i += 1;
-            return false;
-        }
-    }
 
     //var date_orig = d.date;
     //var ordinal = format_ordinal(d.date);
