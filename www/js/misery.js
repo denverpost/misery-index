@@ -159,93 +159,94 @@ $.getJSON( fn['scores'], function( data ) {
 
 function build_chart()
 {
-var $chart = $('#chart');
-//var mobile_threshold = 500;
-var aspect = { width: 12, height: 6 };
-if ( typeof window.bar_width === 'undefined' ) window.bar_width = 5;
-console.log(misery_dates);
-var chart_width = misery_dates.delta * 5;
+    var $chart = $('#chart');
+    //var mobile_threshold = 500;
+    var aspect = { width: 12, height: 6 };
+    if ( typeof window.bar_width === 'undefined' ) window.bar_width = 5;
+    console.log(misery_dates);
+    var chart_width = misery_dates.delta * 5;
 
-var margin = { top: 20, right: 20, bottom: 30, left: 30 },
-    width = $chart.width() - margin.left - margin.right,
-    height = 200 - margin.top - margin.bottom;
+    var margin = { top: 20, right: 20, bottom: 30, left: 30 },
+        width = $chart.width() - margin.left - margin.right,
+        height = 200 - margin.top - margin.bottom;
 
-var x = d3.scale.ordinal()
-    //.rangeRoundBands([0, width], .1);
-    .rangeRoundBands([1, chart_width], .1);
-var y = d3.scale.linear()
-    .range([height, 0]);
+    var x = d3.scale.ordinal()
+        //.rangeRoundBands([0, width], .1);
+        .rangeRoundBands([1, chart_width], .1);
+    var y = d3.scale.linear()
+        .range([height, 0]);
 
-var x_axis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
+    var x_axis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
 
-var y_axis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .ticks(10);
+    var y_axis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks(10);
 
-var chart = d3.select("#chart")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var chart = d3.select("#chart")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var data = window.data;
-var count_min = 0;
+    var data = window.data;
+    var count_min = 0;
 
-var i = 0;
-data.forEach(function(d) 
-{
-    // Formatting times per https://github.com/d3/d3/wiki/Time-Formatting
-    var format = d3.time.format("%m/%d/%Y");
-    var format_axis = d3.time.format("%b %-d");
-    var format_ordinal = d3.time.format("%-j");
-    d.date = format.parse(d.date);
-
-
-    //var date_orig = d.date;
-    //var ordinal = format_ordinal(d.date);
-    d.date = format_axis(d.date);
-    d.date = d.date.replace(season_year, '\'');
-
-    d.count = +d.count;
-    if ( +d.count > count_min ) count_min = +d.count;
-
-    previous_date = d.date;
-    i += 1;
-});
-
-x.domain(data.map(function(d) { return d.date; }));
-y.domain([0, d3.max(data, function(d) { 
-    if ( count_min < 10 ) return 10;
-    return d.count; })]);
+    var i = 0;
+    data.forEach(function(d) 
+    {
+        // Formatting times per https://github.com/d3/d3/wiki/Time-Formatting
+        var format = d3.time.format("%m/%d/%Y");
+        var format_axis = d3.time.format("%b %-d");
+        var format_ordinal = d3.time.format("%-j");
+        d.date = format.parse(d.date);
 
 
-chart.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(x_axis);
+        //var date_orig = d.date;
+        //var ordinal = format_ordinal(d.date);
+        d.date = format_axis(d.date);
+        d.date = d.date.replace(season_year, '\'');
 
-chart.append("g")
-    .attr("class", "y axis")
-    .call(y_axis)
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", window.bar_width + 1)
-    .attr("dy", ".71em")
-    .style("text-anchor", "end")
-    .text("Misery");
+        d.count = +d.count;
+        if ( +d.count > count_min ) count_min = +d.count;
 
-chart.selectAll("bar")
-    .data(data)
-    .enter().append("rect")
-    .attr("class", "bar")
-    .attr("x", function(d) { return x(d.date); })
-    //.attr("width", x.rangeBand())
-    .attr("width", window.bar_width)
-    .attr("y", function(d) { return y(d.count); })
-    .attr("height", function(d) { return height - y(d.count); });
+        previous_date = d.date;
+        i += 1;
+    });
+
+    x.domain(data.map(function(d) { return d.date; }));
+    y.domain([0, d3.max(data, function(d) { 
+        if ( count_min < 10 ) return 10;
+        return d.count; })]);
+
+
+    chart.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(x_axis);
+
+    chart.append("g")
+        .attr("class", "y axis")
+        .call(y_axis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", window.bar_width + 1)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Misery");
+
+    chart.selectAll("bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return x(d.date); })
+        //.attr("width", x.rangeBand())
+        .attr("width", window.bar_width)
+        .attr("y", function(d) { return y(d.count); })
+        .attr("height", function(d) { return height - y(d.count); });
 }
 build_chart();
+
         });
