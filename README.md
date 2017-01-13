@@ -7,6 +7,8 @@ Let's quantify how miserable the Colorado Rockies are, daily.
 
 ### How to set the Misery Index up for a new year
 
+1. Un-comment-out the misery index cron job on prod.
+
 ### How the Misery Index works.
 
 # License
