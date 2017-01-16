@@ -3,12 +3,19 @@ Let's quantify how miserable the Colorado Rockies are, daily.
 
 ![Sad Dinger](http://extras.mnginteractive.com/live/media/site36/2015/0624/20150624_043103_sad_dinger.gif)
 
+## How-to's
+
+### How to set the Misery Index up for a new year
+
+1. Un-comment-out the misery index cron job on prod.
+
+### How the Misery Index works.
 
 # License
 
 The MIT License (MIT)
 
-Copyright © 2015-2016 The Denver Post
+Copyright © 2015-2017 The Denver Post
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
