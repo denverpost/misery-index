@@ -17,6 +17,13 @@ Let's quantify how miserable the Colorado Rockies are, daily.
 ### How to set the Misery Index up for a new year
 
 1. Un-comment-out the misery index cron job on prod.
+1. Create a new tab and name it after the current year. If you want to hook a Google Form up to the sheet, create the Form ([it should look similar to this](https://docs.google.com/forms/d/e/1FAIpQLScLoPIC6GWdCcP7ib7TRhNkT34zocPZAO7EBe3xz4YxzPwZQQ/viewform)) and after you finish creating it, Google will give you an option to tie it to an existing sheet. Do that.
+1. Edit the "YEAR" variable in [deploy.bash](deploy.bash) so it's the current year. 
+1. Copy [www/index.html](www/index.html), name it after the previous year. So, in the 2017 season, you would rename www/index.html www/2016.html. Push that new file to production.
+1. Edit [the previous year's Misery Index article](http://www.denverpost.com/2016/04/25/colorado-rockies-misery-index-2016/) to point to the new previous year's file.
+1. Also change the filename of http://extras.denverpost.com/app/misery-index/output/scores.json to http://extras.denverpost.com/app/misery-index/output/scores-PREVIOUSYEAR.json (where "PREVIOUSYEAR" would be 2016 or 2017 or whatever the previous year was), and update the filename reference in the previous year's markup to point to it.
+1. Edit www/index.html so it reflects the current season.
+1. Sorry this is so janky.
 
 ### How the Misery Index works.
 
