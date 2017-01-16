@@ -5,6 +5,15 @@ Let's quantify how miserable the Colorado Rockies are, daily.
 
 ## How-to's
 
+### How to set up a dev environment to work on the Misery Index
+
+1. Clone this repo to your computer.
+1. Create a virtual environment for this project. (If this item doesn't make sense to you, [https://github.com/denverpost/stat-tracker#how-to-set-up-your-dev-environment](read these instructions here))
+1. Activate the virtual env if you haven't yet.
+1. Install the requirements with `pip install -r requirements.txt`
+1. Add two environment variables, `ACCOUNT_USER` and `ACCOUNT_KEY`. You can get the values for these variables by setting up an Oauth2 key for the Misery Index spreadsheet with Google, and [this page will tell you how to set up Oauth2 access to that spreadsheet](http://gspread.readthedocs.io/en/latest/oauth2.html).
+
+
 ### How to set the Misery Index up for a new year
 
 1. Un-comment-out the misery index cron job on prod.
