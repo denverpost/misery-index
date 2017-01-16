@@ -163,7 +163,7 @@ function build_chart()
     //var mobile_threshold = 500;
     var aspect = { width: 12, height: 6 };
     if ( typeof window.bar_width === 'undefined' ) window.bar_width = 5;
-    console.log(misery_dates);
+    //console.log(misery_dates);
     var chart_width = misery_dates.delta * 5;
 
     var margin = { top: 20, right: 20, bottom: 30, left: 30 },

@@ -27,6 +27,8 @@ Let's quantify how miserable the Colorado Rockies are, daily.
 
 ### How the Misery Index works.
 
+It downloads a spreadsheet of miserable events. Each miserable event has a date, a description, and a score from 1 to 10. The data from the spreadsheet is turned into two json files, one a list of the events, the other a day-by-day index of the misery score.
+
 # License
 
 The MIT License (MIT)

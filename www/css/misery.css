@@ -19,7 +19,7 @@
 }
 .axis text {
   font: 10px sans-serif;
-    color: #666;
+  color: #666;
 }
 
 .axis path,
@@ -30,12 +30,12 @@
 }
 
 .x.axis path {
-  display: none;
+ /* delete? */ display: none;
 }
 
 /* On daily: Hide all but the every-seventh tick and label on the x axis */
-g.x > g:nth-child(1n+0) { display:none; }
-g.x > g:nth-child(7n+1) { display: block; }
+g.x g:nth-child(1n+0) { display:none; }
+g.x g:nth-child(12n+1) { display: block; }
 
 /* On monthly: Hide all but the every-third tick and label on the x axis */
 .chart-month g.x > g:nth-child(1n+0) { display:none; }

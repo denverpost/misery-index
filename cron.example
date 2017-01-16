@@ -1,0 +1,2 @@
+SHELL=/bin/bash
+cd /path/to/misery-index; workon MISERY; ./deploy.bash
